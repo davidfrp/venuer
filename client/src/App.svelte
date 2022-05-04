@@ -1,11 +1,12 @@
 <script lang="ts">
-	export let name: string;
+	import { Router } from "@roxi/routify";
+	import { routes } from "../.routify/routes";
+
+	console.log(routes);
+	
 </script>
 
-<main class="text-center p-4 mx-auto max-w-xs sm:max-w-none">
-	<h1 class="my-10 uppercase text-[#ff3e00] text-6xl font-thin">Hello {name}!</h1>
-	<p class="my-4">Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Router {routes} />
 
 <style lang="postcss" global>
 	@tailwind base;
