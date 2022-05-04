@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "main": "src/app.js",
+  "main": "src/main.js",
   "dependencies": {
     "express": "^4.17.3"
   }
