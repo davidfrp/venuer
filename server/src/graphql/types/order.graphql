@@ -1,0 +1,12 @@
+type Order {
+  id: ID!
+
+  "The user who placed the order."
+  vendee: User
+
+  "The event the order is for."
+  event: Event
+
+  "The seats the user has ordered."
+  seats: [Seat!]!
+}

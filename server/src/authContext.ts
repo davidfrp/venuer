@@ -8,10 +8,10 @@ type ExpressContext = {
 }
 
 type AppContext = {
-  userId: string
+  userId?: string
 }
 
-export const authContext = ({ req }: ExpressContext) => {
+export default ({ req }: ExpressContext): AppContext | undefined => {
   const authHeader = req.headers.authorization // Bearer <token>
   const token = authHeader?.split(' ').pop()
 

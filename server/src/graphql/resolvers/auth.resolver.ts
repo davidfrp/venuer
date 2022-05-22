@@ -1,13 +1,12 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-core'
-import User from '../../models/user.model'
+import { User } from '../../models/user.model'
+import { compare } from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
 
 export default {
   Mutation: {
     // Creates a new user
-    // @ts-ignore noImplicitAny
-    register: async (_, { name, email, password }) => {
+    register: async (_: any, { name, email, password }: any) => {
       const isEmailAvailable = !await User.findOne({ email: email.trim().toLowerCase() })
 
       if (!isEmailAvailable) {
@@ -18,12 +17,13 @@ export default {
         throw new ApolloError('Password is too weak.', 'PASSWORD_TOO_WEAK')
       }
 
-      const user = await User.create({
+      const user = new User({
         name: name.trim(),
         email: email.trim().toLowerCase(),
-        password: await bcrypt.hash(password, 10),
-        registeredAt: new Date().getTime()
+        password
       })
+
+      await user.save()
 
       const token = jwt.sign(
         { userId: user.id },
@@ -34,12 +34,11 @@ export default {
       return { token }
     },
     // Logs in a user
-    // @ts-ignore noImplicitAny
-    login: async (_, { email, password }) => {
+    login: async (_: any, { email, password }: any) => {
       const user = await User.findOne({ email: email.trim().toLowerCase() })
 
       if (user) {
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await compare(password, user.password)
 
         if (isPasswordValid) {
           const token = jwt.sign(

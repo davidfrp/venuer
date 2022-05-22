@@ -6,10 +6,10 @@ type Mutation {
   login(email: String!, password: String!): AuthResponse
   
   # Sends a password reset link to the owner of the given email
-  forgotPassword(email: String!)
+  # forgotPassword(email: String!)
 
   # Resets a password using a token sent to the user
-  resetPassword(token: String!, newPassword: String!)
+  # resetPassword(token: String!, newPassword: String!)
 }
 
 type AuthResponse {

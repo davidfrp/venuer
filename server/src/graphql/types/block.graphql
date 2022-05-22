@@ -1,0 +1,19 @@
+"""
+A specific section of a hall.
+A hall may consist of one or more blocks.
+"""
+type Block {
+  id: ID!
+
+  "Name of the block (e.g. Parterre, Terrace E, etc.)"
+  name: String!
+
+  "A description of the block."
+  description: String
+
+  "Which hall this block is in."
+  hall: Hall!
+
+  "All the seats in this block."
+  seats: [Seat!]!
+}

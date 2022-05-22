@@ -1,0 +1,29 @@
+type Query {
+  events(page: Int, perPage: Int, query: String): [Event]
+  event(id: ID!): Event
+}
+
+type Event {
+  id: ID!
+
+  "Name of the event."
+  name: String!
+
+  "A description of the event."
+  description: String
+
+  "Short additional information regarding the event (e.g. TV-transmission may occur, etc.)"
+  additionalInfo: String
+
+  "Which venue the event is taking place at."
+  venue: Venue!
+
+  "Where inside the venue the event is taking place."
+  hall: Hall!
+
+  "When the event starts."
+  startsAt: Int!
+
+  "When the event ends."
+  endsAt: Int!
+}

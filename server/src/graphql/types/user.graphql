@@ -19,8 +19,11 @@ type User {
   # Email of the user
   email: String!
 
-  # When the user got registered
-  registeredAt: String!
+  # When the user got created
+  createdAt: String!
+
+  # When the user last got updated
+  updatedAt: String!
 
   # The user's role
   role: Int
