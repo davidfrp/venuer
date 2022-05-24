@@ -2,16 +2,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon -e ts,json,graphql --exec \"npm run build && node dist/index.js\""
+    "start": "nodemon -e ts,json --exec \"npm run build && node dist/index.js\""
   },
   "dependencies": {
-    "@graphql-tools/load-files": "^6.5.3",
-    "apollo-server-core": "^3.7.0",
-    "apollo-server-express": "^3.7.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.3"
   },
