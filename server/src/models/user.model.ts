@@ -5,13 +5,17 @@ interface IUser {
   name: string
   email: string
   password: string
+  isVerified: boolean
+  isRevoked: boolean
   role: number
 }
 
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
+  isVerified: { type: Boolean, default: false },
+  isRevoked: { type: Boolean, default: false },
   role: { type: Number, default: 0 }
 }, { timestamps: true })
 
