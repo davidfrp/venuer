@@ -1,6 +1,19 @@
 import { RequestHandler } from 'express'
 import { verify, JwtPayload } from 'jsonwebtoken'
 
+type User = {
+  id: string
+  role: number
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User
+    }
+  }
+}
+
 export const authContext: RequestHandler = async (req, _, next) => {
   const authHeader = req.headers.authorization // Bearer <token>
   const token = authHeader?.split(' ').pop()
