@@ -15,13 +15,14 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'no-extra-parens': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        caughtErrorsIgnorePattern: '^_'
+        argsIgnorePattern: '_+(?!\\w)',
+        varsIgnorePattern: '_+(?!\\w)',
+        caughtErrorsIgnorePattern: '_+(?!\\w)'
       }
     ]
   }
