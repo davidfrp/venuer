@@ -1,7 +1,9 @@
 import 'dotenv/config'
-import express, { RequestHandler } from 'express'
-import authRouter from './routers/auth.router'
-import userRouter from './routers/user.router'
+import express, { ErrorRequestHandler } from 'express'
+import authRouter from './routers/authRouter'
+import userRouter from './routers/userRouter'
+import allowCors from './middleware/allowCors'
+import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 
 const uri = process.env.MONGODB_URI as string
@@ -9,17 +11,31 @@ mongoose.connect(uri)
 
 const app = express()
 
-const allowCors: RequestHandler = (_, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  next()
-}
-
+// Preliminary middleware
 app.use(allowCors)
+app.use(cookieParser())
 app.use(express.json())
 
+// TODO Add rate limiter
+
+// Routes
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
+
+// Unknown routes
+app.use((_, res) => {
+  res.status(404).send({ message: 'Not found.' })
+})
+
+const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
+  const { status, message, code } = err
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(status ?? 500).send({ message, code })
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 4000
 

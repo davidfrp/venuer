@@ -1,6 +1,6 @@
 import { HydratedDocument, Schema, model } from 'mongoose'
 import { Location } from './location.model'
-import { User } from './user.model'
+import { User } from './userModel'
 
 interface IVenue {
   owner: HydratedDocument<typeof User>

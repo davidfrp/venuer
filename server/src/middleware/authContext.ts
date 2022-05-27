@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import { verify, JwtPayload } from 'jsonwebtoken'
+import { UnauthorizedError } from '../errors'
 
 type User = {
   id: string
@@ -15,17 +16,16 @@ declare global {
 }
 
 export const authContext: RequestHandler = async (req, _, next) => {
-  const authHeader = req.headers.authorization // Bearer <token>
-  const token = authHeader?.split(' ').pop()
-
+  const token = req.cookies.token
   if (token) {
     try {
       const { id, role } = verify(token, process.env.JWT_SECRET as string) as JwtPayload
       req.user = { id, role }
+      return next()
     } catch (_) {
-      // Do nothing
+      next(new UnauthorizedError('Invalid token'))
     }
   }
 
-  next()
+  next(new UnauthorizedError('Requires authentication'))
 }
