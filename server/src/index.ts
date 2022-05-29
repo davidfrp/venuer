@@ -32,7 +32,12 @@ const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (res.headersSent) {
     return next(err)
   }
-  res.status(status ?? 500).send({ message, code })
+  if (status) {
+    res.status(status).send({ message, code })
+  } else {
+    console.error(err)
+    res.status(500).send({ message: 'Internal server error' })
+  }
 }
 
 app.use(errorHandler)
