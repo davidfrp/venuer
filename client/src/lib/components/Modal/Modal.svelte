@@ -3,13 +3,20 @@
   import { fade, scale } from 'svelte/transition'
   import { browser } from '$app/env'
 
-  export let title = ''
-  export let isOpen = false
+  export let title: string
+  export let isOpen: boolean
   export let focusRef: HTMLElement | null = null
-  export let onRequestClose = () => {}
+  export let onRequestClose: () => void
 
   $: if (isOpen) {
     focusRef?.focus()
+    if (browser) {
+      document.body.classList.add('overflow-hidden')
+    }
+  } else {
+    if (browser) {
+      document.body.classList.remove('overflow-hidden')
+    }
   }
 
   const handleOverlayClick = (e: MouseEvent) => {
@@ -40,15 +47,14 @@
     before:fixed before:top-0 before:left-0 before:right-0 before:bottom-0"
     on:click={handleOverlayClick} in:fade={{duration: 150}} out:fade={{duration: 150}}>
     <aside role="dialog" class="fixed bottom-0 z-20 shadow-2xl
-      max-h-[calc(100vh-2rem)] w-full bg-white rounded-t-xl
-      overflow-hidden pb-[env(safe-area-inset-bottom)] sm:rounded-b-xl
+      max-h-[calc(100vh-4rem)] w-full bg-white rounded-t-md
+      overflow-hidden pb-[env(safe-area-inset-bottom)] sm:rounded-b-md
       sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2
       sm:bottom-auto sm:max-w-md" in:scale={{start: 1.2, duration: 200}}>
       <header class="p-6 pb-0 pt-8">
         <h1 class="text-2xl font-semibold">{title}</h1>
       </header>
-      <div class="p-6 max-h-[calc(100vh-2rem)] 
-        overflow-hidden overflow-y-auto">
+      <div class="p-6 max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
         <slot />
       </div>
     </aside>

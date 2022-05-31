@@ -1,9 +1,11 @@
+import { browser } from '$app/env'
+
 const apiUrl: string = import.meta.env.VITE_API_BASE_URL
 
-type ApiResponse = {
-  status: 'success' | 'error',
-  [key: string]: any
-}
+type ApiResponse = [
+  data: Record<string, unknown>,
+  status: 'success' | 'error'
+]
 
 /**
  * Requests a resource from the API.
@@ -12,20 +14,22 @@ type ApiResponse = {
  * @param body Body of the request
  * @returns Promise that resolves to the response body and status
  */
-const request = async (method: string, path: string, body?: any): Promise<ApiResponse> => {
-  const options: any = {
+const request = async (
+  method: string,
+  path: string,
+  body?: Record<string, unknown>,
+  fetch: typeof window.fetch = window.fetch
+): Promise<ApiResponse> => {
+  const response = await fetch(`${apiUrl}${path}`, {
     method,
-    headers: {},
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: body && JSON.stringify(body),
     credentials: 'include'
-  }
+  })
 
-  if (body) {
-    options.headers['Content-Type'] = 'application/json'
-    options.body = JSON.stringify(body)
-  }
-
-  const response = await fetch(`${apiUrl}${path}`, options)
-  let data: any
+  let data: Record<string, unknown> = {}
 
   try {
     data = await response.json()
@@ -33,24 +37,22 @@ const request = async (method: string, path: string, body?: any): Promise<ApiRes
     // Do nothing
   }
 
-  return {
-    status: response.status > 199 && response.status < 400 ? 'success' : 'error',
-    ...data
-  }
+  const status = response.status > 199 && response.status < 400 ? 'success' : 'error'
+  return [data, status]
 }
 
-export const get = (path: string) => {
-  return request('GET', path)
+export const get = (path: string, fetch?: typeof window.fetch) => {
+  return request('GET', path, undefined, fetch)
 }
 
-export const del = (path: string) => {
-  return request('DELETE', path)
+export const del = (path: string, fetch?: typeof window.fetch) => {
+  return request('DELETE', path, undefined, fetch)
 }
 
-export const post = (path: string, body?: any) => {
-  return request('POST', path, body)
+export const post = (path: string, body?: Record<string, unknown>, fetch?: typeof window.fetch) => {
+  return request('POST', path, body, fetch)
 }
 
-export const patch = (path: string, body?: any) => {
-  return request('PATCH', path, body)
+export const patch = (path: string, body?: Record<string, unknown>, fetch?: typeof window.fetch) => {
+  return request('PATCH', path, body, fetch)
 }

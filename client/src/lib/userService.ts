@@ -1,7 +1,10 @@
 import { get, patch } from '$lib/api'
 
-export const me = () =>
-  get('/users/@me')
+export const me = (fetch?: typeof window.fetch) =>
+  get('/users/@me', fetch)
 
-export const save = ({ ...user }) =>
-  patch('/users/@me', user)
+export const myVenues = (fetch?: typeof window.fetch) =>
+  get('/users/@me/venues', fetch)
+
+export const save = ({ ...user }: Record<string, unknown>) =>
+  patch('/users/@me', user, fetch)
