@@ -1,14 +1,15 @@
 import { Router } from 'express'
 import { sign } from 'jsonwebtoken'
 import { errorCatcher } from '../utils'
-import { User, UserDocument } from '../models/userModel'
+import { User } from '../models/userModel'
 import { UnauthorizedError, BadRequestError } from '../errors'
-import { validate, registerSchema } from '../validation/validator'
+import { registerSchema, loginSchema } from '../joi/authValidation'
+import { validate } from '../joi/validator'
 
 const router = Router()
 
 router.post('/register', errorCatcher(async (req, res) => {
-  const { name, email, password } = validate(registerSchema, req.body)
+  const { name, email, password } = validate(req.body, registerSchema)
 
   const isEmailTaken = await User.exists({ email })
 
@@ -23,14 +24,13 @@ router.post('/register', errorCatcher(async (req, res) => {
   return res.redirect(307, `${req.baseUrl}/login`)
 }))
 
+// TODO Add redirectTo param to redirect to a specific page after login.
 router.post('/login', errorCatcher(async (req, res) => {
-  let { email, password } = req.body
+  const { email, password } = validate(req.body, loginSchema)
 
-  email = email.trim().toLowerCase()
+  const user = await User.findOne({ email })
 
-  const user: UserDocument | null = await User.findOne({ email })
-
-  if (!user || !(await user.matchesPassword(password))) {
+  if (!user || !(await user.matchesPassword(password as string))) {
     throw new UnauthorizedError('Wrong email or password')
   }
 
@@ -49,7 +49,7 @@ router.post('/login', errorCatcher(async (req, res) => {
   return res.sendStatus(204)
 }))
 
-router.post('/logout', errorCatcher(async (req, res) => {
+router.post('/logout', errorCatcher(async (_, res) => {
   res.clearCookie('token')
   return res.sendStatus(204)
 }))

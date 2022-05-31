@@ -22,3 +22,10 @@ export class BadRequestError extends HttpError {
     this.status = 400
   }
 }
+
+export class ForbiddenError extends HttpError {
+  constructor (message?: string) {
+    super(message ?? 'Forbidden')
+    this.status = 403
+  }
+}

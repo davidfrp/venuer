@@ -2,9 +2,12 @@ import 'dotenv/config'
 import express, { ErrorRequestHandler } from 'express'
 import authRouter from './routers/authRouter'
 import userRouter from './routers/userRouter'
+import venueRouter from './routers/venueRouter'
+import eventRouter from './routers/eventRouter'
 import allowCors from './middleware/allowCors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
+import { NotFoundError } from './errors'
 
 const uri = process.env.MONGODB_URI as string
 mongoose.connect(uri)
@@ -18,13 +21,15 @@ app.use(express.json())
 
 // TODO Add rate limiter
 
-// Routes
+// Routers
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
+app.use('/venues', venueRouter)
+app.use('/events', eventRouter)
 
 // Unknown routes
-app.use((_, res) => {
-  res.status(404).send({ message: 'Not found.' })
+app.use(() => {
+  throw new NotFoundError()
 })
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {

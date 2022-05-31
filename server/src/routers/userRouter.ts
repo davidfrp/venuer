@@ -3,14 +3,24 @@ import { isValidObjectId } from 'mongoose'
 import { NotFoundError, UnauthorizedError } from '../errors'
 import { authContext } from '../middleware/authContext'
 import { User } from '../models/userModel'
+import { Venue } from '../models/venueModel'
 import { errorCatcher } from '../utils'
-import { validate, updateUserSchema } from '../validation/validator'
+import { updateUserSchema } from '../joi/userValidation'
+import { validate } from '../joi/validator'
 
 const router = Router()
 
 router.get('/@me', authContext, errorCatcher(async (req, res) => {
   const user = await User.findById(req.user!.id)
   return res.send(user)
+}))
+
+router.get('/@me/venues', authContext, errorCatcher(async (req, res) => {
+  if (req.user!.role < 1) {
+    throw new NotFoundError()
+  }
+  const venues = await Venue.find({ owner: req.user!.id })
+  return res.send(venues)
 }))
 
 router.get('/', errorCatcher(async (_, res) => {
@@ -34,43 +44,22 @@ router.get('/:id', errorCatcher(async (req, res) => {
 router.patch('/:id', authContext, errorCatcher(async (req, res) => {
   const {
     password: currentPassword,
-    newPassword: password,
+    newPassword,
     ...rest
-  } = validate(updateUserSchema, req.body)
+  } = validate(req.body, updateUserSchema)
 
   const user = await User.findById(req.user!.id)
-  if (!user || !(await user.matchesPassword(currentPassword))) {
+  if (!user || !(await user.matchesPassword(currentPassword as string))) {
     throw new UnauthorizedError('Wrong password')
   }
 
-  user.set({ ...rest, password: password ?? currentPassword })
+  user.set({ ...rest })
+  if (newPassword) {
+    user.set({ password: newPassword })
+  }
   await user.save()
 
   return res.send(user)
 }))
-
-// router.patch('/:id', authContext, errorCatcher(async (req, res) => {
-//   const { id } = req.params
-
-//   if (isValidObjectId(id)) {
-//     const user = await User.findById(id)
-//     if (user) {
-//       const { name, email, password } = req.body
-//       if (name) {
-//         user.name = name
-//       }
-//       if (email) {
-//         user.email = email
-//       }
-//       if (password) {
-//         user.password = password
-//       }
-//       await user.save()
-//       return res.send(user)
-//     }
-//   }
-
-//   throw new NotFoundError()
-// }))
 
 export default router
