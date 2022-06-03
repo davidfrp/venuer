@@ -1,8 +1,10 @@
 /// <reference types="@sveltejs/kit" />
 
-type Venue = {
+declare type Venue = {
   _id: string
+  owner: string
   name: string
+  slug: string
   description: string
   location: {
     country: string | undefined
@@ -13,6 +15,22 @@ type Venue = {
     entranceCoordinates: string | undefined
     additionalInfo: string | undefined
   }
+  createdAt: string
+  updatedAt: string
+}
+
+declare type VenueEvent = {
+  _id: string
+  name: string
+  slug: string
+  description: string
+  videoId: string
+  startsAt: string
+  endsAt: string
+  venue: Venue
+  hall: string
+  createdAt: string
+  updatedAt: string
 }
 
 declare type User = {

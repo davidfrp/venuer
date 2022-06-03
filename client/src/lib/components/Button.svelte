@@ -2,7 +2,7 @@
   type Variant = 'text' | 'contained' | 'outlined' | 'none'
   type Type = 'submit' | 'reset' | 'button'
 
-  $: baseStyles = variant !== 'none' ? `py-2 px-4 min-w-[4rem] capitalize 
+  $: baseStyles = variant !== 'none' ? `py-2 px-4 min-w-[4rem] 
     text-opacity-[0.85] font-semibold bg-brand
     transition-colors w-full h-full` : ''
 

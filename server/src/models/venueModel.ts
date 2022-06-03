@@ -14,11 +14,11 @@ interface VenueDocument extends Document {
 
 const VenueSchema = new Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   location: { type: LocationSchema, required: true },
-  halls: [{ type: Schema.Types.ObjectId, ref: 'Hall' }]
+  halls: [{ type: Schema.Types.ObjectId, ref: 'Hall', default: [] }]
 }, { timestamps: true })
 
 VenueSchema.set('toJSON', {

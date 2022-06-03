@@ -3,6 +3,7 @@
   import { fade, scale } from 'svelte/transition'
   import { browser } from '$app/env'
 
+  export let id: string
   export let title: string
   export let isOpen: boolean
   export let focusRef: HTMLElement | null = null
@@ -43,7 +44,7 @@
 </script>
 
 {#if isOpen}
-  <div class="fixed z-10 top-0 right-0 bottom-0 left-0 before:bg-[rgb(25,28,35)] before:opacity-50
+  <div {id} class="fixed z-10 top-0 right-0 bottom-0 left-0 before:bg-[rgb(25,28,35)] before:opacity-50
     before:fixed before:top-0 before:left-0 before:right-0 before:bottom-0"
     on:click={handleOverlayClick} in:fade={{duration: 150}} out:fade={{duration: 150}}>
     <aside role="dialog" class="fixed bottom-0 z-20 shadow-2xl

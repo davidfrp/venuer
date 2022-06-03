@@ -10,7 +10,9 @@
 </script>
 
 <fieldset class="flex flex-col relative">
-  <label for={id} class="mb-2">{label}</label>
+  {#if label}
+    <label for={id} class="mb-2">{label}</label>
+  {/if}
   <div class="flex items-center">
     <input
       {id}

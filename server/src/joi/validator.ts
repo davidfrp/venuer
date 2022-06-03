@@ -10,10 +10,10 @@ import { BadRequestError } from '../errors'
  * @returns The validated data or undefined
  */
 export const validate = (
-  data: Record<string, unknown>,
+  data: any,
   schema: Joi.Schema,
   suppressErrors?: boolean
-): Record<string, unknown> => {
+): any => {
   const { error, value } = schema.validate(data, {
     abortEarly: false,
     errors: { wrap: { label: '\'' } }
@@ -30,9 +30,26 @@ export const validate = (
   return {}
 }
 
-export const validObjectIdSchema = Joi.custom((value, helpers) => {
+// export const validObjectIdSchema = Joi.object().min(1).pattern(
+//   /^/,
+//   Joi.string().custom((value, helpers) => {
+//     if (isValidObjectId(value)) {
+//       return value
+//     }
+//     return helpers.error('any.invalid')
+//   }).message('{{#label}} must be a valid ObjectId')
+// )
+
+const isValidObjectIdValidator: Joi.CustomValidator = (value, helpers) => {
   if (isValidObjectId(value)) {
     return value
   }
   return helpers.error('any.invalid')
-}).message('{{#label}} must be a valid ObjectId')
+}
+
+export const validObjectIdSchema = Joi.alternatives().try(
+  Joi.string().custom(isValidObjectIdValidator)
+    .message('{{#label}} must be a valid ObjectId'),
+  Joi.object().min(1).pattern(/^/, isValidObjectIdValidator)
+    .message('{{#label}} must be a valid ObjectId')
+)

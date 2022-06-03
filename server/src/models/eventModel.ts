@@ -5,19 +5,23 @@ import { VenueDocument } from './venueModel'
 interface EventDocument extends Document {
   venue: VenueDocument
   name: string
+  slug: string
   description: string
-  hall: HallDocument
+  videoId?: string
   startsAt: Date
   endsAt: Date
+  hall: HallDocument
 }
 
 const EventSchema = new Schema({
   venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
-  hall: { type: Schema.Types.ObjectId, ref: 'Hall', required: true },
+  videoId: { type: String },
   startsAt: { type: Date, required: true },
-  endsAt: { type: Date, required: true }
+  endsAt: { type: Date, required: true },
+  hall: { type: Schema.Types.ObjectId, ref: 'Hall', required: true }
 }, { timestamps: true })
 
 EventSchema.set('toJSON', {

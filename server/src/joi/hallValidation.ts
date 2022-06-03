@@ -5,8 +5,6 @@ export const name = Joi.string().trim().min(3).max(255)
 
 export const description = Joi.string().trim().min(3).max(255)
 
-export const venue = validObjectIdSchema
-
 const seat = validObjectIdSchema
 
 export const block = Joi.object().keys({
@@ -20,6 +18,5 @@ export const blocks = Joi.array().items(block)
 export const createHallSchema = Joi.object({
   name: name.required(),
   description: description.required(),
-  venue: venue.required(),
   blocks: blocks.required()
 })

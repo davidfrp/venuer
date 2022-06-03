@@ -3,7 +3,7 @@
 	import Button from '$lib/components/Button.svelte'
   import Alert from '$lib/components/Alert.svelte'
   import { register } from '$lib/authService'
-  import { me } from '$lib/userService'
+  import { getMe } from '$lib/userService'
   import { session } from '$app/stores'
   import { goto } from '$app/navigation'
 
@@ -16,7 +16,7 @@
   const handleSubmit = async () => {
     const [data, status] = await register(name, email, password)
     if (status === 'success') {
-      const [data, status] = await me()
+      const [data, status] = await getMe()
       if (status === 'success') {
         session.set({ user: data as User })
         goto('/')

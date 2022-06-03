@@ -14,7 +14,7 @@ interface HallDocument extends Document {
 }
 
 const HallSchema = new Schema({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   description: { type: String },
   venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
   blocks: [{

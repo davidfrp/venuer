@@ -1,42 +1,44 @@
 <script context="module" lang="ts">
   import type { Load } from '@sveltejs/kit'
-	import { get } from '$lib/api'
-  import { session } from '$app/stores'
+  import { getEvents } from '$lib/eventService'
 
   export const load: Load = async ({ fetch }) => {
-		const [venues] = await get('/venues', fetch)
-		const [events] = await get('/events', fetch)
-    return {
-      props: {
-        venues,
-				events
+    const [data, status] = await getEvents(fetch)
+    if (status === 'success') {
+      return {
+        status: 200,
+        props: {
+          events: data
+        }
       }
     }
+
+    return { status: 500 }
   }
 </script>
 
 <script lang="ts">
-  export let venues: any[]
-  export let events: any[]
+  import EventCard from './_EventCard.svelte'
+  import Searchbar from './_Searchbar.svelte'
+
+  export let events: VenueEvent[]
+
+  $: filteredEvents = events.filter(event =>
+    event.name.trim().toLowerCase().includes(
+      search.trim().toLowerCase()
+    )
+  )
+
+  let search = ''
 </script>
 
-{#if events.length === 0}
-  <p>No events found</p>
+<Searchbar bind:search={search} />
+{#each filteredEvents as event}
+  <EventCard {event} />
 {:else}
-  <ul>
-    {#each events as event}
-      <li>{JSON.stringify(event, null, 2)}</li>
-    {/each}
-  </ul>
-{/if}
-
-<pre>{JSON.stringify($session, null, 2)}</pre>
-
-
-<ul>
-	{#each venues as venue}
-		<li>
-			<pre>{JSON.stringify(venue, null, 2)}</pre>
-		</li>
-	{/each}
-</ul>
+  {#if search}
+    <p>No results found</p>
+  {:else}
+    <p>No events found</p>
+  {/if}
+{/each}

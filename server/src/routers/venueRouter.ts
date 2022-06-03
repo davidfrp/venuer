@@ -23,65 +23,59 @@ router.get('/', errorCatcher(async (req, res) => {
   return res.send(venues)
 }))
 
-router.get('/:id', errorCatcher(async (req, res) => {
-  const venue = await Venue.findById(req.params.id)
+router.get('/:slug', errorCatcher(async (req, res) => {
+  const venue = await Venue.findOne({ slug: req.params.slug })
   if (!venue) {
-    throw new NotFoundError()
+    throw new NotFoundError('Venue not found')
   }
+
   return res.send(venue)
 }))
 
 router.post('/', authContext, errorCatcher(async (req, res) => {
   if (req.user!.role < 1) {
-    throw new ForbiddenError()
+    throw new ForbiddenError('Vendees are not allowed to create venues')
   }
 
   const {
     name,
     description,
-    location,
-    halls
+    location
   } = validate(req.body, createVenueSchema)
 
-  const isNameTaken = await Venue.exists({ name })
+  const slug = (name as string)
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-')
 
-  if (isNameTaken) {
-    throw new BadRequestError('\'name\' is already used by another venue')
+  const isSlugTaken = await Venue.exists({ slug })
+  if (isSlugTaken) {
+    throw new BadRequestError('\'name\' results in a \'slug\' that is already used by another event')
   }
 
   const venue = new Venue({
     owner: req.user!.id,
     name,
-    slug: (
-      (name as string)
-        .trim()
-        .toLowerCase()
-        .replace(/[^\w ]+/g, '')
-        .replace(/ +/g, '-')
-    ),
+    slug,
     description,
-    location,
-    halls
+    location
   })
 
   const createdVenue = await venue.save()
   return res.status(201).send(createdVenue)
 }))
 
-router.patch('/:id', authContext, errorCatcher(async (req, res) => {
-  if (req.user!.role < 1) {
-    throw new ForbiddenError()
-  }
-
+router.patch('/:slug', authContext, errorCatcher(async (req, res) => {
   const data = validate(req.body, updateVenueSchema)
 
-  const venue = await Venue.findById(req.params.id)
+  const venue = await Venue.findOne({ slug: req.params.slug })
   if (!venue) {
-    throw new NotFoundError()
+    throw new NotFoundError('Venue not found')
   }
 
   if (venue.owner.toString() !== req.user!.id) {
-    throw new ForbiddenError('You are not allowed to update this venue')
+    throw new ForbiddenError('You\'re not the owner of this venue')
   }
 
   venue.set(data)
@@ -90,7 +84,7 @@ router.patch('/:id', authContext, errorCatcher(async (req, res) => {
   return res.send(updatedVenue)
 }))
 
-router.use('/:venueId/events', eventRouter)
-router.use('/:venueId/halls', hallRouter)
+router.use('/:venueSlug/events', eventRouter)
+router.use('/:venueSlug/halls', hallRouter)
 
 export default router

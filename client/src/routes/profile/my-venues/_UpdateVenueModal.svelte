@@ -1,36 +1,32 @@
 <script lang="ts">
-  import Alert from '../Alert.svelte'
-  import Button from '../Button.svelte'
-  import TextInput from '../TextInput.svelte'
-  import Modal from './Modal.svelte'
-  import { patch, } from '$lib/api'
+  import Alert from '$lib/components/Alert.svelte'
+  import Button from '$lib/components/Button.svelte'
+  import TextInput from '$lib/components/TextInput.svelte'
+  import Modal from '$lib/components/Modal.svelte'
+  import { saveVenue } from '$lib/venueService'
 
   export let venue: Venue
-  export let isOpen: boolean = false
-  export let onRequestClose: () => void
   export let onSaved: (data: any) => void
+  export let modalProps: any
 
-  let inputRef: HTMLInputElement | null = null
   let errorMessage: string
-
+  let inputRef: HTMLInputElement
   let location: Record<string, string | undefined>
 
-  $: if (venue || isOpen) {
-    reset()
-  }
+  $: if (venue || modalProps.isOpen) reset()
 
   const reset = () => {
     errorMessage = ''
     name = venue?.name
     description = venue?.description
     location = {
-      country: venue?.location.country || undefined,
-      city: venue?.location.city || undefined,
-      postalCode: venue?.location.postalCode || undefined,
-      address: venue?.location.address || undefined,
-      entrance: venue?.location.entrance || undefined,
-      entranceCoordinates: venue?.location.entranceCoordinates || undefined,
-      additionalInfo: venue?.location.additionalInfo || undefined
+      country: venue?.location.country,
+      city: venue?.location.city,
+      postalCode: venue?.location.postalCode,
+      address: venue?.location.address,
+      entrance: venue?.location.entrance,
+      entranceCoordinates: venue?.location.entranceCoordinates,
+      additionalInfo: venue?.location.additionalInfo
     }
   }
 
@@ -38,13 +34,13 @@
   let description: string
 
   const onClose = () => {
-    isOpen = false
-    onRequestClose()
+    modalProps.isOpen = false
+    modalProps.onRequestClose()
   }
 
   const handleSubmit = async () => {
-    const [data, status] = await patch(`/venues/${venue._id}`, {
-      name, description, location
+    const [data, status] = await saveVenue({
+      name, description, location, id: venue._id
     })
     if (status === 'success') {
       onSaved(data)
@@ -55,7 +51,7 @@
   }
 </script>
 
-<Modal title="Edit venue" {isOpen} onRequestClose={onClose} focusRef={inputRef}>
+<Modal {...modalProps} focusRef={inputRef}>
   <form on:submit|preventDefault={handleSubmit}>
     {#if errorMessage}
       <div class="mb-4">
