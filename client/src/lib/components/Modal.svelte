@@ -3,9 +3,9 @@
   import { fade, scale } from 'svelte/transition'
   import { browser } from '$app/env'
 
-  export let id: string
-  export let title: string
-  export let isOpen: boolean
+  export let id: string | null = null
+  export let title: string = ''
+  export let isOpen: boolean = false
   export let focusRef: HTMLElement | null = null
   export let onRequestClose: () => void
 
@@ -52,9 +52,11 @@
       overflow-hidden pb-[env(safe-area-inset-bottom)] sm:rounded-b-md
       sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2
       sm:bottom-auto sm:max-w-md" in:scale={{start: 1.2, duration: 200}}>
-      <header class="p-6 pb-0 pt-8">
-        <h1 class="text-2xl font-semibold">{title}</h1>
-      </header>
+      {#if title}
+        <header class="p-6 pb-0 pt-8">
+          <h1 class="text-2xl font-semibold">{title}</h1>
+        </header>
+      {/if}
       <div class="p-6 max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
         <slot />
       </div>
