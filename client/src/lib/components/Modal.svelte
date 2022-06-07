@@ -1,6 +1,5 @@
 <script lang="ts">
   import { scale } from 'svelte/transition'
-  import { browser } from '$app/env'
   import OverlayWrapper from './OverlayWrapper.svelte'
 
   export let size: 'sm' | 'md' | 'lg' = 'md'
@@ -13,13 +12,6 @@
 
   $: if (isOpen) {
     focusRef?.focus()
-    // if (browser) {
-    //   document.body.classList.add('overflow-hidden')
-    // }
-  } else {
-    // if (browser) {
-    //   document.body.classList.remove('overflow-hidden')
-    // }
   }
 
   $: sizeStyles = size === 'sm' ? 'sm:max-w-sm' : (size === 'lg' ? 'sm:max-w-3xl' : 'sm:max-w-md')
