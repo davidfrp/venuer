@@ -24,11 +24,22 @@ declare type VenueEvent = {
   name: string
   slug: string
   description: string
-  videoId: string
+  imageUrl: string
+  videoId?: string
   startsAt: string
-  endsAt: string
+  endsAt?: string
   venue: Venue
-  hall: string
+  hall: {
+    _id: string
+    name: string
+    description: string
+    blocks: {
+      name: string
+      seats: {
+        _id: string
+      }[]
+    }[]
+  }
   createdAt: string
   updatedAt: string
 }

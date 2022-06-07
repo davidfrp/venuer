@@ -1,6 +1,6 @@
 import { get, patch } from '$lib/api'
 
-export const getEvents = (fetch?: typeof window.fetch) =>
+export const getEvents = (fetch: typeof window.fetch) =>
   get('/events', fetch)
 
 export const getEventsByVenue = (slug: string, fetch?: typeof window.fetch) =>

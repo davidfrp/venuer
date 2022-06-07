@@ -4,7 +4,7 @@
   import { getEventBySlug } from '$lib/eventService'
 
   export const load: Load = async ({ params, fetch }) => {
-    const [event, status] = await getEventBySlug(params.slug, fetch)
+    const [event, status] = await getEventBySlug(params.slug, fetch as any)
     if (status === 'success') {
       return {
         status: 200,
@@ -19,10 +19,37 @@
 </script>
 
 <script lang="ts">
-  import { session } from '$app/stores'
-  export let event: Event
+  import dayjs from 'dayjs'
+  export let event: VenueEvent
 </script>
 
-<h1>Hi there {$session.user?.id}</h1>
+<svelte:head>
+  <title>Venuer - {event.name}</title>
+  <meta name="description" content={event.description} />
+  <meta property="og:title" content="{event.name} live at 
+    {event.venue.name}, {event.venue.location.city} the 
+    {dayjs(event.startsAt).format('MMMM D, YYYY [at] H:mm')}"
+  />
+  <meta property="og:description" content={event.description} />
+  <meta property="og:image" content={event.imageUrl} />
+</svelte:head>
 
-<pre>{JSON.stringify(event, null, 2)}</pre>
+<div>
+  <div class="h-[50vh] rounded-xl overflow-hidden">
+    <img class="h-full w-full object-cover" src={event.imageUrl} alt="">
+  </div>
+  <h1>{event.hall.name}</h1>
+  <h1>{event.name}</h1>
+  <h2>{event.startsAt}</h2>
+  <p class="whitespace-pre-wrap text-gray-600">
+    {event.description}
+  </p>
+  <iframe
+    class="aspect-video w-full max-w-2xl"
+    src="http://www.youtube.com/embed/{event.videoId}"
+    allowfullscreen
+    frameborder={1}
+    title=""
+  />
+  <p class="whitespace-pre-wrap">{JSON.stringify(event, null, 2)}</p>  
+</div>

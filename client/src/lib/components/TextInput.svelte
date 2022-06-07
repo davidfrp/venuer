@@ -9,11 +9,11 @@
   let isPasswordShown: boolean = false
 </script>
 
-<fieldset class="flex flex-col relative">
+<fieldset class="flex flex-col">
   {#if label}
     <label for={id} class="mb-2">{label}</label>
   {/if}
-  <div class="flex items-center">
+  <div class="flex items-center relative">
     <input
       {id}
       name={id}

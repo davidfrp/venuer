@@ -4,7 +4,7 @@
   import { getVenueBySlug } from '$lib/venueService'
 
   export const load: Load = async ({ params, fetch }) => {
-    const [venue, status] = await getVenueBySlug(params.slug, fetch)
+    const [venue, status] = await getVenueBySlug(params.slug, fetch as any)
     if (status === 'success') {
       return {
         status: 200,
@@ -22,6 +22,13 @@
   import { session } from '$app/stores'
   export let venue: Venue
 </script>
+
+<svelte:head>
+  <title>Venuer - {venue.name}</title>
+  <meta name="description" content={venue.description} />
+  <meta property="og:title" content="{venue.name}, {venue.location.city}" />
+  <meta property="og:description" content={venue.description} />
+</svelte:head>
 
 <h1>Hi there {$session.user?.id}</h1>
 

@@ -8,7 +8,6 @@ interface HallDocument extends Document {
   venue: VenueDocument
   blocks: {
     name: string
-    description?: string
     seats: SeatDocument[]
   }[]
 }
@@ -19,7 +18,6 @@ const HallSchema = new Schema({
   venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
   blocks: [{
     name: { type: String, required: true },
-    description: { type: String },
     seats: [{ type: Schema.Types.ObjectId, ref: 'Seat' }]
   }]
 }, { timestamps: true })

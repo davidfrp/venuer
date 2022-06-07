@@ -7,22 +7,41 @@ interface EventDocument extends Document {
   name: string
   slug: string
   description: string
+  imageUrl: string
   videoId?: string
   startsAt: Date
-  endsAt: Date
+  endsAt?: Date
   hall: HallDocument
 }
 
 const EventSchema = new Schema({
-  venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
+  venue: {
+    _id: { type: Schema.Types.ObjectId, ref: 'Venue' },
+    location: {
+      entranceCoordinates: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          default: undefined
+        },
+        coordinates: {
+          type: [Number],
+          default: undefined
+        }
+      }
+    }
+  },
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
+  imageUrl: { type: String, required: true },
   videoId: { type: String },
   startsAt: { type: Date, required: true },
-  endsAt: { type: Date, required: true },
+  endsAt: { type: Date },
   hall: { type: Schema.Types.ObjectId, ref: 'Hall', required: true }
 }, { timestamps: true })
+
+EventSchema.index({ 'venue.location.entranceCoordinates': '2dsphere' })
 
 EventSchema.set('toJSON', {
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */

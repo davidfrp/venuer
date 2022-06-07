@@ -3,7 +3,7 @@
   import { getMe } from '$lib/userService'
 
   export const load: Load = async ({ fetch, session }) => {
-    const [data, status] = await getMe(fetch)
+    const [data, status] = await getMe(fetch as any)
     if (status === 'success') {
       session.user = {
         id: data._id as string,
@@ -21,6 +21,6 @@
 
 <Navbar />
 
-<main class="pt-20 px-4">
+<main class="pt-20 px-6 lg:px-24">
   <slot />
 </main>

@@ -9,6 +9,8 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import { NotFoundError } from './errors'
 
+import path from 'path'
+
 const uri = process.env.MONGODB_URI as string
 mongoose.connect(uri)
 
@@ -26,6 +28,8 @@ app.use('/auth', authRouter)
 app.use('/users', userRouter)
 app.use('/venues', venueRouter)
 app.use('/events', eventRouter)
+
+app.use(express.static(path.resolve('../client/public')))
 
 // Unknown routes
 app.use(() => {

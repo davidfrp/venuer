@@ -1,8 +1,8 @@
 import * as Joi from 'joi'
 
-export const name = Joi.string().trim().min(3).max(255)
+export const name = Joi.string().trim().min(3).max(2048)
 
-export const description = Joi.string().trim().min(3).max(255)
+export const description = Joi.string().trim().min(3).max(2048)
 
 // TODO Check all min/max/length/... etc. rules everywhere are consistent
 export const location = Joi.object().keys({

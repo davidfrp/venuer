@@ -9,7 +9,7 @@
     font-family: 'Poppins', sans-serif;
   }
 
-  a {
+  a:not(.no-base) {
     @apply text-brand hover:underline;
   }
 }

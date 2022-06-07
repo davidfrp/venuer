@@ -17,21 +17,24 @@
   import { session } from '$app/stores'
   
   let tabs = [
-    { routeId: 'profile', title: 'Personal information' },
-    { routeId: 'profile/my-venues', title: 'Your venues', state: $session.user?.role ?? 0 > 1 },
-    { routeId: 'profile/orders', title: 'Your purchases' }
+    { routeId: 'account-settings', title: 'Personal information' },
+    { routeId: 'account-settings/my-venues', title: 'Your venues', state: ($session.user?.role ?? 0) >= 1 },
+    { routeId: 'account-settings/orders', title: 'Your purchases' }
   ]
 </script>
 
-<div class="max-w-4xl mx-auto space-y-4 p-4 sm:p-8">
-  <h1 class="text-4xl font-semibold mb-8">Manage your profile</h1>
-  <nav role="tablist" class="flex gap-x-4 overflow-x-auto">
+<!-- TODO Remove this comment: 960px 1024px for max-width -->
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-4xl font-semibold mb-8">Manage your account</h1>
+  <nav role="tablist" class="flex overflow-x-auto">
     {#each tabs as tab}
       {#if tab.state ?? true}
         <a
-          class="py-3 flex-1 items-center font-semibold whitespace-nowrap 
-          border-b-2 border-brand hover:no-underline text-gray-700"
+          class="no-base p-4 items-center font-semibold whitespace-nowrap 
+          border-b-2 hover:no-underline text-gray-600"
           class:border-gray-200={tab.routeId !== $page.routeId}
+          class:border-gray-700={tab.routeId === $page.routeId}
+          class:text-gray-900={tab.routeId === $page.routeId}
           aria-selected={tab.routeId === $page.routeId}
           href={'/' + tab.routeId}
           role="tab"

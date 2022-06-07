@@ -12,16 +12,16 @@ const router = Router({ mergeParams: true })
 
 router.get('/', errorCatcher(async (req, res) => {
   const venueSlug = req.params.venueSlug
-  if (venueSlug) {
-    const venue = await Venue.findOne().populate('halls')
-    if (!venue) {
-      throw new NotFoundError()
-    }
+
+  const venue = await Venue.findOne({
+    slug: venueSlug
+  }).populate('halls')
+
+  if (venue) {
     return res.send(venue.halls)
   }
 
-  const halls = await Hall.find()
-  return res.send(halls)
+  throw new NotFoundError()
 }))
 
 router.post('/', authContext, errorCatcher(async (req, res) => {

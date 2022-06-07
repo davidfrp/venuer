@@ -1,5 +1,3 @@
-import { browser } from '$app/env'
-
 const apiUrl: string = import.meta.env.VITE_API_BASE_URL
 
 type ApiResponse = [

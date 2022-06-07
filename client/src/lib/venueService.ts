@@ -10,7 +10,7 @@ export const getVenueById = (id: string, fetch?: typeof window.fetch) =>
   get(`/venues/${id}`, fetch)
 
 export const getVenueBySlug = (slug: string, fetch?: typeof window.fetch) =>
-  get(`/venues?slug=${slug}`, fetch)
+  get(`/venues/${slug}`, fetch)
 
 export const getVenueEvents = (slug: string, fetch?: typeof window.fetch) =>
   get(`/venues/${slug}/events`, fetch)
