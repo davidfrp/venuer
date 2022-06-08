@@ -2,9 +2,12 @@
   type Variant = 'text' | 'contained' | 'outlined' | 'none'
   type Type = 'submit' | 'reset' | 'button'
 
-  $: baseStyles = variant !== 'none' ? `py-2 px-4 min-w-[4rem] 
-    text-opacity-[0.85] font-semibold bg-brand
-    transition-colors w-full h-full` : ''
+  $: sizeStyles = size === 'sm' ? 'px-3 py-1' : size === 'lg' 
+    ? 'w-full h-14' : 'p-2.5'
+
+  $: baseStyles = variant !== 'none' ? `min-w-[4rem] leading-5
+    text-opacity-[0.85] font-semibold bg-brand rounded-md
+    transition-colors w-full h-full ${sizeStyles}` : ''
 
   $: containedStyles = variant === 'contained' ? `text-white text-opacity-100 
     bg-opacity-100 hover:bg-opacity-90` : ''
@@ -16,16 +19,17 @@
     bg-opacity-0 hover:bg-opacity-10 border-2 border-brand border-opacity-50 
     hover:border-opacity-100` : ''
   
-  $: sizeStyles = size === 'sm' ? `px-3 py-1` : size === 'lg' ? `w-full h-14` : ''
+  $: disabledStyles = isDisabled ? `opacity-[0.38] pointer-events-none` : ''
   
-  $: styles = [baseStyles, containedStyles, outlinedStyles, textStyles].join(' ')
+  $: styles = [baseStyles, containedStyles, outlinedStyles, textStyles, disabledStyles].join(' ')
 
   export let variant: Variant = 'none'
   export let type: Type = 'submit'
   export let size: 'sm' | 'md' | 'lg' = 'md'
+  export let isDisabled: boolean = false
 </script>
 
-<div class={sizeStyles + ' bg-white'}>
+<div>
   <button {type} class={styles} on:click>
     <slot />
   </button>
