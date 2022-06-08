@@ -20,6 +20,7 @@
 
 <script lang="ts">
   import dayjs from 'dayjs'
+  import { session } from '$app/stores'
   export let event: VenueEvent
 </script>
 
@@ -38,6 +39,11 @@
   <div class="h-[50vh] rounded-xl overflow-hidden">
     <img class="h-full w-full object-cover" src={event.imageUrl} alt="">
   </div>
+  {#if $session.user}
+    <a sveltekit:prefetch href="/{event.venue.slug}/{event.slug}/tickets" class="no-base p-4 rounded-lg my-3 block text-white bg-pink-600">Buy tickets</a>
+  {:else}
+    <a href="/login?redirectTo=/{event.venue.slug}/{event.slug}/tickets" class="no-base p-4 rounded-lg my-3 block text-white bg-pink-600">Log in to buy tickets</a>
+  {/if}
   <h1>{event.hall.name}</h1>
   <h1>{event.name}</h1>
   <h2>{event.startsAt}</h2>

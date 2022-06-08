@@ -19,6 +19,7 @@
 </script>
 
 <script lang="ts">
+  import Button from '$lib/components/Button.svelte'
   import { session } from '$app/stores'
   export let venue: Venue
 </script>
@@ -32,8 +33,12 @@
 
 <h1>Hi there {$session.user?.id}</h1>
 
-{#if $session.user && $session.user.id === venue.owner}
-  <p>You are the owner of this venue</p>
+{#if $session.user && $session.user.id === venue.organizer}
+  <strong>You are an organizer of this venue</strong>
+  <p>To make changes to this event <a href="/me/organizing">go to your dashboard</a></p>
+  <Button variant="text" size="sm">Edit venue</Button>
+{:else}
+  <strong>You are not an organizer of this venue</strong>
 {/if}
 
 <pre>{JSON.stringify(venue, null, 2)}</pre>
