@@ -6,6 +6,8 @@ export const description = Joi.string().trim().min(3).max(2048)
 
 // TODO Check all min/max/length/... etc. rules everywhere are consistent
 export const location = Joi.object().keys({
+  id: Joi.any().strip(),
+  _id: Joi.any().strip(),
   country: Joi.string().trim().empty('').required(),
   city: Joi.string().trim().empty('').required(),
   postalCode: Joi.string().trim().empty('').required(),

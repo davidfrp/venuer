@@ -37,9 +37,9 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     if (venue) {
       const hall = await Hall.findById(hallId)
       if (hall) {
-        const isOwner = venue.owner.toString() === req.user!.id
+        const isOrganizer = venue.organizer.toString() === req.user!.id
 
-        if (!isOwner) {
+        if (!isOrganizer) {
           throw new ForbiddenError()
         }
 

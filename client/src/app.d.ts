@@ -2,7 +2,7 @@
 
 declare type Venue = {
   _id: string
-  owner: string
+  organizer: string
   name: string
   slug: string
   description: string
@@ -33,15 +33,17 @@ declare type VenueEvent = {
     _id: string
     name: string
     description: string
-    blocks: {
-      name: string
-      seats: {
-        _id: string
-      }[]
+    seats: {
+      _id: string
     }[]
   }
   createdAt: string
   updatedAt: string
+}
+
+declare type Seat = {
+  _id: string
+  name: string
 }
 
 declare type User = {

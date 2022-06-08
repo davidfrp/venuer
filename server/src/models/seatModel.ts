@@ -1,15 +1,18 @@
 import { model, Schema, Document } from 'mongoose'
+import { BlockDocument } from './blockModel'
 
 interface SeatDocument extends Document {
-  row: number
-  name: number
+  row?: string
+  number?: string
   additionalInfo?: string
+  block: BlockDocument
 }
 
 const SeatSchema = new Schema({
-  row: { type: Number, required: true },
-  name: { type: String, required: true, unique: true },
-  additionalInfo: { type: String }
+  row: { type: String },
+  number: { type: String },
+  additionalInfo: { type: String },
+  block: { type: Schema.Types.ObjectId, ref: 'Block' }
 }, { timestamps: true })
 
 SeatSchema.set('toJSON', {

@@ -55,7 +55,7 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
   }
 
   const venue = new Venue({
-    owner: req.user!.id,
+    organizer: req.user!.id,
     name,
     slug,
     description,
@@ -74,14 +74,28 @@ router.patch('/:slug', authContext, errorCatcher(async (req, res) => {
     throw new NotFoundError('Venue not found')
   }
 
-  if (venue.owner.toString() !== req.user!.id) {
-    throw new ForbiddenError('You\'re not the owner of this venue')
+  if (venue.organizer.toString() !== req.user!.id) {
+    throw new ForbiddenError('You\'re not an organizer of this venue')
   }
 
   venue.set(data)
   const updatedVenue = await venue.save()
 
   return res.send(updatedVenue)
+}))
+
+router.delete('/:slug', authContext, errorCatcher(async (req, res) => {
+  const venue = await Venue.findOne({ slug: req.params.slug })
+  if (!venue) {
+    throw new NotFoundError('Venue not found')
+  }
+
+  if (venue.organizer.toString() !== req.user!.id) {
+    throw new ForbiddenError('You\'re not an organizer of this venue')
+  }
+
+  await venue.remove()
+  return res.sendStatus(204)
 }))
 
 router.use('/:venueSlug/events', eventRouter)

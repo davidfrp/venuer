@@ -1,6 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 import { HallDocument } from './hallModel'
-import { VenueDocument } from './venueModel'
+import { VenueDocument, VenueSchema } from './venueModel'
 
 interface EventDocument extends Document {
   venue: VenueDocument
@@ -15,22 +15,7 @@ interface EventDocument extends Document {
 }
 
 const EventSchema = new Schema({
-  venue: {
-    _id: { type: Schema.Types.ObjectId, ref: 'Venue' },
-    location: {
-      entranceCoordinates: {
-        type: {
-          type: String,
-          enum: ['Point'],
-          default: undefined
-        },
-        coordinates: {
-          type: [Number],
-          default: undefined
-        }
-      }
-    }
-  },
+  venue: VenueSchema,
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
@@ -49,8 +34,6 @@ EventSchema.set('toJSON', {
 })
 
 EventSchema.pre('remove', async function (next) {
-  // const location = await Location.findById(this.location)
-  // await location?.remove()
   next()
 })
 

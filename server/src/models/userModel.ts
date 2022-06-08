@@ -43,7 +43,7 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.pre('remove', async function (next) {
-  const venues = await Venue.find({ owner: this._id })
+  const venues = await Venue.find({ organizer: this._id })
   await Promise.all(venues.map(venue => venue.remove()))
 
   const orders = await Order.find({ vendee: this._id })

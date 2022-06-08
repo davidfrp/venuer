@@ -25,15 +25,15 @@ router.get('/', errorCatcher(async (req, res) => {
 }))
 
 router.post('/', authContext, errorCatcher(async (req, res) => {
-  const { name, description, blocks } = validate(req.body, createHallSchema)
+  const { name, description, seats } = validate(req.body, createHallSchema)
 
   const venue = await Venue.findOne({ slug: req.params.venueSlug })
   if (!venue) {
     throw new NotFoundError('Venue not found')
   }
 
-  if (venue.owner.toString() !== req.user!.id) {
-    throw new ForbiddenError('You are not the owner of this venue')
+  if (venue.organizer.toString() !== req.user!.id) {
+    throw new ForbiddenError('You are not an organizer of this venue')
   }
 
   const isNameTaken = await Hall.findOne({ name, venue: venue._id })
@@ -45,7 +45,7 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     name,
     description,
     venue: venue._id,
-    blocks
+    seats
   })
 
   await hall.save()

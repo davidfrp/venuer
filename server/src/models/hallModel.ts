@@ -6,20 +6,14 @@ interface HallDocument extends Document {
   name: string
   description?: string
   venue: VenueDocument
-  blocks: {
-    name: string
-    seats: SeatDocument[]
-  }[]
+  seats: SeatDocument[]
 }
 
 const HallSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String },
-  venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
-  blocks: [{
-    name: { type: String, required: true },
-    seats: [{ type: Schema.Types.ObjectId, ref: 'Seat' }]
-  }]
+  venue: { type: Schema.Types.ObjectId, ref: 'Venue', required: true },
+  seats: [{ type: Schema.Types.ObjectId, ref: 'Seat', default: [] }]
 }, { timestamps: true })
 
 HallSchema.set('toJSON', {

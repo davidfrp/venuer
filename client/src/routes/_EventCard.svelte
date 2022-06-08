@@ -17,7 +17,7 @@
         {dayjs(event.startsAt).format('dddd MMM D ')}
       </time>
       <time datetime={event.startsAt}>
-        {dayjs(event.startsAt).format('H:mm')}
+        {dayjs(event.startsAt).format(' — H:mm')}
       </time>
     </div>
   </div>

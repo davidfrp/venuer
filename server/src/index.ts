@@ -31,6 +31,8 @@ app.use('/events', eventRouter)
 
 app.use(express.static(path.resolve('../client/public')))
 
+// FIXME Replace the word "vendor" with "organizer"
+
 // Unknown routes
 app.use(() => {
   throw new NotFoundError()

@@ -94,8 +94,8 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     throw new NotFoundError('Venue not found')
   }
 
-  if (venue.owner.toString() !== req.user!.id) {
-    throw new ForbiddenError('You\'re not the owner of this venue')
+  if (venue.organizer.toString() !== req.user!.id) {
+    throw new ForbiddenError('You\'re not an organizer of the venue for this event')
   }
 
   const isHallFound = !!await Hall.findById(hallId)
@@ -111,12 +111,7 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     videoId,
     startsAt,
     endsAt,
-    venue: {
-      _id: venue._id,
-      location: {
-        entranceCoordinates: venue.location.entranceCoordinates
-      }
-    },
+    venue,
     hall: hallId
   })
 

@@ -19,7 +19,7 @@ router.get('/@me/venues', authContext, errorCatcher(async (req, res) => {
   if (req.user!.role < 1) {
     throw new NotFoundError()
   }
-  const venues = await Venue.find({ owner: req.user!.id })
+  const venues = await Venue.find({ organizer: req.user!.id })
   return res.send(venues)
 }))
 
