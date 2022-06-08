@@ -18,10 +18,10 @@
       {id}
       name={id}
       {...{type: isPassword && !isPasswordShown ? 'password' : 'text'}}
-      placeholder={placeholder || label}
+      placeholder={placeholder}
       bind:value={value}
       bind:this={inputRef}
-      class="px-4 py-3 w-full bg-slate-100"
+      class="px-4 py-3 w-full bg-slate-100 rounded-md"
     />
     {#if isPassword}
       <button
