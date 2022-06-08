@@ -20,17 +20,17 @@
 {#if isOpen}
   <OverlayWrapper {onRequestClose} {isTopMost}>
     <aside {id} role="dialog" class={`fixed z-50 bottom-0 shadow-2xl
-      max-h-[calc(100vh-4rem)] w-full bg-white rounded-t-xl
+      w-full bg-white rounded-t-xl
       overflow-hidden pb-[env(safe-area-inset-bottom)] sm:rounded-b-xl
       sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2
-      sm:bottom-auto ${sizeStyles}`} in:scale={{start: 1.1, duration: 200}}
+      sm:bottom-auto ${sizeStyles}`} in:scale={{start: 1.2, duration: 200}}
     >
       {#if title}
         <header class="p-6 pb-0 pt-8">
           <h1 class="text-2xl font-semibold">{title}</h1>
         </header>
       {/if}
-      <div class="p-6 max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
+      <div class="p-6 max-h-[calc(80vh-4rem)] sm:max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
         <slot />
       </div>
     </aside>
