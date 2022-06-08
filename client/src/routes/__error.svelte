@@ -9,7 +9,7 @@
   export let status: number
 </script>
 
-<div class="p-6 mx-auto space-y-6 max-w-none sm:max-w-2xl min-h-full text-center ">
+<div class="p-12 mx-auto space-y-6 max-w-none sm:max-w-2xl min-h-full text-center ">
   <h1 class="font-semibold text-6xl">Oops, something went wrong!</h1>
   <p class="text-2xl">{error.message}</p>
   {#if dev && error.stack}
