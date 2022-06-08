@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
+  import { fade } from 'svelte/transition'
   import { browser } from '$app/env'
 
   export let onRequestClose: () => void
@@ -43,17 +44,11 @@
       onRequestClose()
     }
   }
-
-  // const handleOverlayClick = (e: MouseEvent) => {
-  //   // if (e.target === e.currentTarget) {
-  //   //   onRequestClose()
-  //   // }
-  // }
 </script>
 
 <div class="fixed top-0 right-0 bottom-0 left-0 before:bg-[rgb(25,28,35)] before:opacity-50
   before:fixed before:top-0 before:left-0 before:right-0 before:bottom-0 backdrop-blur-sm"
-  bind:this={ref} class:z-10={isTopMost}
+  bind:this={ref} class:z-10={isTopMost} in:fade={{ duration: 100 }} out:fade={{ duration: 100 }}
 >
   <slot />
 </div>
