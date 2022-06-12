@@ -21,11 +21,12 @@ export const endsAt = Joi.date().min('now')
 
 export const getEventSchema = Joi.object().keys({
   venue: name,
-  after: Joi.date(),
-  before: Joi.date(),
+  after: Joi.date().timestamp('javascript'),
+  before: Joi.date().timestamp('javascript'),
   lng: Joi.number(),
   lat: Joi.number(),
-  distance: Joi.number()
+  distance: Joi.number(),
+  searchTerm: Joi.string().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
 }).when('.distance', {
   is: Joi.exist(),
   then: Joi.object().and('lng', 'lat', 'distance'),
