@@ -23,7 +23,7 @@
 
   export let event: VenueEvent
 
-  $: seats = <Seat[]>[] // event.hall.seats
+  $: seats = <Seat[]>[] // event.hall.seats // TODO implement seats from hall.
   let selectedSeats: Seat[]
 </script>
 
@@ -49,6 +49,7 @@
       <TicketForm />
       <OrderForm />
     -->
+    <div>2× 295 DKK, total: 590 DKK</div>
   </div>
   <!-- TODO Floating action button? -->
 </div>

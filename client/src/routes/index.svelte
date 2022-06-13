@@ -13,21 +13,15 @@
       }
     }
 
-    return { status: 500 }
+    // TODO use redirect instead of displaying the error.
+    // return { status: 302, redirect: '/' }
+    return { status: 500, error: JSON.stringify(data) }
   }
 </script>
 
 <script lang="ts">
   import EventCard from './_EventCard.svelte'
   export let events: VenueEvent[]
-
-  // $: filteredEvents = events.filter(event =>
-  //   event.name.trim().toLowerCase().includes(
-  //     search.trim().toLowerCase()
-  //   )
-  // )
-
-  // let search = '' // FIXME Remove unused code
 </script>
 
 <svelte:head>
@@ -38,10 +32,12 @@
   <meta property="og:image" content="" />
 </svelte:head>
 
-<div class="mt-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {#each events as event}
-    <EventCard {event} />
-  {:else}
-    <h2 class="text-xl">No exact matches</h2>
-  {/each}
+<div class="mt-6">
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {#each events as event}
+      <EventCard {event} />
+    {:else}
+      <h2 class="text-xl">No exact matches</h2>
+    {/each}
+  </div>
 </div>

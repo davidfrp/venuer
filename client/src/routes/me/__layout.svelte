@@ -26,7 +26,7 @@
 
 <!-- TODO Remove this comment: 960px 1024px for max-width -->
 <div class="pt-6 max-w-4xl mx-auto">
-  <h1 class="text-4xl font-semibold mb-8">Manage your account</h1>
+  <h1 class="font-semibold mb-8">Manage your account</h1>
   <nav role="tablist" class="flex overflow-x-auto">
     {#each tabs as tab}
       {#if tab.state ?? true}

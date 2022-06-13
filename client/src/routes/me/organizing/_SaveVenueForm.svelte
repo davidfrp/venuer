@@ -21,7 +21,6 @@
     const slug = venue?.slug
     const [data, status] = await saveVenue({ slug, name, description, location })
     if (status === 'success') {
-      // TODO open issue sveltejs/kit?, paths without leading slash don't call load more than once.
       await invalidate('/' + $page.routeId!)
       onSaved()
     } else {

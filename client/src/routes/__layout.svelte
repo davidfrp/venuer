@@ -14,6 +14,8 @@
   }
 </script>
 
+<!-- TODO Extract this into a named layout. -->
+
 <script lang="ts">
   import '../app.css'
   import Navbar from '$lib/components/Navbar.svelte'
