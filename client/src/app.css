@@ -13,4 +13,8 @@
   a:not(.no-base) {
     @apply text-brand hover:underline;
   }
+
+  ::selection {
+    @apply bg-brand text-white;
+  }
 }
