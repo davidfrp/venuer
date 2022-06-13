@@ -1,104 +1,111 @@
 <script lang="ts">
-  import SearchbarItem from './SearchbarItem.svelte'
-  import IconButton from './IconButton.svelte'
   import Modal from './Modal.svelte'
-  import Calendar from './Calendar.svelte'
-  import { goto } from '$app/navigation'
+  import SearchForm from './SearchForm.svelte'
   import { page } from '$app/stores'
-  import { get } from 'svelte/store'
+  import { goto } from '$app/navigation'
   import dayjs from 'dayjs'
 
-  let isCalendarShown = false
-  let isMapShown = false
-
-  const after = get(page).url.searchParams.get('after')
-  const before = get(page).url.searchParams.get('before')
-
-  let afterDate: Date | null = after && new Date(parseInt(after)) || null
-  let beforeDate: Date | null = before && new Date(parseInt(before)) || null
-  let venueSlug: string // TODO look at this one's usage.
-  let location: { lng: number, lat: number, distance?: number }
-
-  const getSearchParams = (query: Record<string, string | undefined>) => {
-    Object.keys(query).forEach(key => {
-      if (!query[key]) {
-        delete query[key]
-      }
-    })
-    return new URLSearchParams(query as Record<string, string>).toString()
-  }
-
-  const handleSearch = () => {
-    const query = getSearchParams({
-      venue: venueSlug,
-      after: afterDate?.getTime().toString(),
-      before: (
-        beforeDate?.getTime().toString() || 
-        (afterDate && afterDate.getTime() + 86399999)?.toString()
-      ),
-      distance: location?.distance?.toString(),
-      lng: location?.lng.toString(),
-      lat: location?.lat.toString(),
-    })
-
-    goto(`/?${query}`)
-  }
-
-  const formatBetweenDates = (after: Date | null, before: Date | null) => {
-    if (after && before) {
-      if (dayjs(after).isSame(before, 'day')) {
-        return dayjs(after).format('MMM D')
-      }
-      return `${dayjs(after).format('MMM D')} - ${dayjs(before).format('MMM D')}`
-    } else if (after) {
-      return dayjs(after).format('MMM D')
-    }
-    return ''
-  }
+  const initializedQuery: Partial<Omit<SearchQuery, 'after' | 'before'> & {
+    after: Date
+    before: Date
+  }> = {}
   
-  $: whereValue = location?.lat && location?.lng ? 'Nearby' : 'Anywhere'
-  $: whenValue = afterDate ? formatBetweenDates(afterDate, beforeDate) : 'Anytime'
+  $: {
+    const searchParams = $page.url.searchParams
+
+    if (searchParams.has('after')) {
+      initializedQuery.after = new Date(Number(searchParams.get('after')))
+    } else if (initializedQuery.after) {
+      initializedQuery.after = undefined
+    }
+
+    if (searchParams.has('before')) {
+      initializedQuery.before = new Date(Number(searchParams.get('before')))
+    } else if (initializedQuery.before) {
+      initializedQuery.before = undefined
+    }
+
+    if (searchParams.has('searchTerm')) {
+      initializedQuery.searchTerm = searchParams.get('searchTerm') as string
+    } else if (initializedQuery.searchTerm) {
+      initializedQuery.searchTerm = undefined
+    }
+
+    if (searchParams.has('lat') && searchParams.has('lng')) {
+      initializedQuery.lat = searchParams.get('lat') as string
+      initializedQuery.lng = searchParams.get('lng') as string
+    } else if (initializedQuery.lat || initializedQuery.lng) {
+      initializedQuery.lat = undefined
+      initializedQuery.lng = undefined
+    }
+  }
+
+  let isOpen: boolean
+
+  const handleSearch = async (query: Partial<Omit<SearchQuery, 'after' | 'before'> & {
+    after: Date
+    before: Date
+  }>) => {
+    const searchQuery: Partial<SearchQuery> = {}
+
+    // Set start and end dates to be timestamps instead of Date objects.
+    if (query.after) {      
+      if (!query.before) {
+        // If missing, set the end date to later same day as the start date.
+        searchQuery.before = (query.after.getTime() + 86399999).toString()
+      } else {
+        searchQuery.before = query.before.getTime().toString()
+      }
+
+      searchQuery.after = query.after.getTime().toString()
+    }
+
+    if (query.searchTerm) {
+      searchQuery.searchTerm = query.searchTerm
+    }
+
+    if (query.lat && query.lng) {
+      searchQuery.lat = query.lat
+      searchQuery.lng = query.lng
+    }
+
+    const searchParams = new URLSearchParams(searchQuery)
+    await goto(`/?${searchParams.toString()}`)
+    isOpen = false
+  }
+
+  const formatDatesToHumanReadable = (startDate?: Date, endDate?: Date) => {
+    let formatedText: string | undefined
+    if (startDate) {
+      formatedText = dayjs(startDate).format('MMM D')
+      if (endDate) {
+        formatedText += ' – ' + dayjs(endDate).format('MMM D')
+      }
+    }
+
+    return formatedText ?? 'Anytime'
+  }
 </script>
 
-<!-- TODO × upon search submit, goto / and add search query params e.g. /?venue=vega&after={new Date()}&q=aurora -->
-<div class="flex divide-x-2 items-stretch">
-  <SearchbarItem
-    on:click={() => isMapShown = !isMapShown}
-    bind:value={whereValue}
-    label="Where?"
-  >
-  </SearchbarItem>
-  <div class="flex items-center">
-    <SearchbarItem
-      onReset={afterDate ? () => { afterDate = beforeDate = null } : undefined}
-      on:click={() => isCalendarShown = !isCalendarShown}
-      bind:value={whenValue}
-      label="When?"
-    >
-      <Modal
-        onRequestClose={() => isCalendarShown = false}
-        isOpen={isCalendarShown}
-        isTopMost={false}
-        size="lg"
-      >
-        <Calendar
-          bind:afterDate={afterDate}
-          bind:beforeDate={beforeDate}
-          isHeightFlexible={false}
-        />
-      </Modal>
-    </SearchbarItem>
+<button class="w-full sm:w-96 py-2.5 flex items-center text-left border bg-gray-100 rounded-full" on:click={() => isOpen = true}>
+  <div class="pl-5 pr-4 text-gray-600">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={3} stroke-linecap="round" stroke-linejoin="round">
+      <circle cx={11} cy={11} r={8} />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
   </div>
-  <!-- <SearchbarItem label="What/Who?" value="AURORA">
-    <p>Write the name of something.</p>
-    <Button on:click={() => {}}>Set VEGA</Button>
-  </SearchbarItem> -->
-  <div class="pl-4 flex items-center">
-    <IconButton on:click={handleSearch} ariaLabel="Search">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
-        <circle cx={11} cy={11} r={8} />
-        <path d="m21 21-4.35-4.35" />
-      </svg>
-    </IconButton>
+  <div class="flex flex-col overflow-hidden">
+    <div class="text-sm font-medium truncate">
+      {initializedQuery.searchTerm ? `"${initializedQuery.searchTerm}"` : 'Search for an event or venue'}
+    </div>
+    <div class="flex gap-1.5 text-xs text-gray-500">
+      <div>{formatDatesToHumanReadable(initializedQuery.after, initializedQuery.before)}</div>
+      <span aria-hidden>&bull;</span>
+      <div>{initializedQuery.lat && initializedQuery.lng ? 'Near you' : 'Anywhere'}</div>
+    </div>
   </div>
-</div>
+</button>
+
+<Modal {isOpen} onRequestClose={() => isOpen = false} title="Search for an event">
+  <SearchForm query={initializedQuery} onSearch={handleSearch} />
+</Modal>

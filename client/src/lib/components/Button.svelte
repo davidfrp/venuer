@@ -2,11 +2,15 @@
   type Variant = 'text' | 'contained' | 'outlined' | 'none'
   type Type = 'submit' | 'reset' | 'button'
 
-  $: sizeStyles = size === 'sm' ? 'px-3 py-1' : size === 'lg' 
-    ? 'w-full h-14' : 'p-2.5'
-
+  // $: sizeStyles = size === 'sm' ? 'px-3 py-1' : size === 'lg' 
+  //   ? 'w-full h-14' : 'p-2.5'
+  $: sizeStyles = size === 'sm' ? 'px-3 py-1' : (
+    size === 'base' ? 'p-2.5' : (
+      size === 'md' ? 'px-6 py-3.5' : 'w-full h-14'
+    )
+  )
   $: baseStyles = variant !== 'none' ? `min-w-[4rem] leading-5
-    text-opacity-[0.85] font-semibold bg-brand rounded-md
+    text-opacity-[0.85] font-semibold bg-brand rounded-lg
     transition-colors w-full h-full ${sizeStyles}` : ''
 
   $: containedStyles = variant === 'contained' ? `text-white text-opacity-100 
@@ -25,7 +29,7 @@
 
   export let variant: Variant = 'none'
   export let type: Type = 'submit'
-  export let size: 'sm' | 'md' | 'lg' = 'md'
+  export let size: 'sm' | 'base' | 'md' | 'lg' = 'base'
   export let isDisabled: boolean = false
 </script>
 

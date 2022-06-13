@@ -15,7 +15,7 @@
 <div
   role="alert"
   bind:this={alertRef}
-  class="bg-red-50 text-red-800 px-6 py-4"
+  class="bg-red-50 text-red-800 px-6 py-4 rounded-lg"
   in:slide|local out:slide|local
 >
   {#if title}

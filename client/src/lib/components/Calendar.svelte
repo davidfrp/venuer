@@ -3,11 +3,12 @@
   import CalendarDate from './CalendarDate.svelte'
   import IconButton from './IconButton.svelte'
 
-  export let afterDate: Date | null = null
-  export let beforeDate: Date | null = null
-  export let isHeightFlexible: boolean
-  
-  let dateOfMonthShown: Date = afterDate ?? new Date()
+  export let startDate: Date | string | undefined = undefined
+  export let endDate: Date | string | undefined = undefined
+  export let isHeightFlexible: boolean = false
+  export let numberOfShownMonths: number = 1
+
+  let dateOfMonthShown: Date = new Date(startDate ?? new Date())
 
   const offsetShownMonth = (offset: number) => {
     const newShownDate = new Date(dateOfMonthShown)
@@ -28,45 +29,41 @@
 
     const numberOfGrids = isHeightFlexible ? Math.ceil((daysInShownMonth + weekDayOffset) / 7) * 7 : 42
 
-    const dates: { date: Date, isAfterDate: boolean, isBeforeDate: boolean, isInMonth: boolean }[] = []
+    const dates: { date: Date, isInMonth: boolean }[] = []
     for (let i = 0; i < numberOfGrids; i++) {
       const offset = i - weekDayOffset + 1
       const date = new Date(dateOfMonthShown.getFullYear(), dateOfMonthShown.getMonth(), offset)
 
-      const isAfterDate = date.toDateString() === afterDate?.toDateString()
-      const isBeforeDate = date.toDateString() === beforeDate?.toDateString()
       const isInMonth = offset > 0 && offset <= daysInShownMonth
 
-      dates.push(({ date, isAfterDate, isBeforeDate, isInMonth }))
+      dates.push(({ date, isInMonth }))
     }
 
     return dates
   }
 
-  // TODO add 23:59:59.999 to before date, to be able to capture single day selections.
-  // FIXME goto('/?after=1654639200000&before=') results in 500 error, and happens if no before data is selected. Set a default before date somehow???
   const handleDateChange = (date: Date) => {
-    if (afterDate && beforeDate) {
-      afterDate = beforeDate = null
+    if (startDate && endDate) {
+      startDate = endDate = undefined
     }
 
-    if (afterDate && date >= afterDate) {
-      beforeDate = new Date(date.getTime() + 86399999)
+    if (startDate && (dayjs(startDate).isBefore(date) || dayjs(date).isSame(startDate))) {
+      endDate = new Date(date.getTime() + 86399999)
     } else {
-      afterDate = date
+      startDate = date
     }
   }
 </script>
 
 <div class="relative">
-  <div class="absolute left-0 top-0.5">
+  <div class="absolute left-2 top-0.5">
     <IconButton on:click={() => offsetShownMonth(-1)}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-wull" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6"/>
       </svg>
     </IconButton>
   </div>
-  <div class="absolute right-0 top-0.5">
+  <div class="absolute right-2 top-0.5">
     <IconButton on:click={() => offsetShownMonth(1)}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
         <path d="m9 18 6-6-6-6"/>
@@ -74,9 +71,9 @@
     </IconButton>
   </div>
 </div>
-<div class="flex flex-wrap gap-6">
-  {#each Array(2) as _, i}
-    <div class="flex flex-1 flex-wrap min-w-[300px] select-none text-center even:hidden md:even:flex">
+<div class="flex gap-6">
+  {#each Array(numberOfShownMonths) as _, i}
+    <div class="flex flex-1 flex-wrap select-none text-center even:hidden md:even:flex">
       <div class="w-full pb-4 pt-2">
         {dayjs(dayjs(dateOfMonthShown).add(i, 'month').toDate()).format('MMMM YYYY')}
       </div>
@@ -90,13 +87,7 @@
         <div class="basis-[calc(100%/7)]">Su</div>
       </div>
       {#each updateDates(dayjs(dateOfMonthShown).add(i, 'month').toDate()) as { date, isInMonth }}
-        <CalendarDate
-          {date}
-          {afterDate}
-          {beforeDate}
-          {isInMonth}
-          onSelected={handleDateChange}
-        />
+        <CalendarDate {date} {startDate} {endDate} {isInMonth} onSelected={handleDateChange} />
       {/each}
     </div>
   {/each}
