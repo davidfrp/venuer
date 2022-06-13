@@ -5,11 +5,9 @@
   export let title: string = ''
   export let message: string
 
-  let alertRef: HTMLElement | null = null
+  let alertRef: HTMLElement
 
-  onMount(() => {
-    alertRef?.scrollIntoView({ behavior: 'smooth' })
-  })
+  $: if (message) alertRef?.scrollIntoView({ behavior: 'smooth' })
 </script>
 
 <div
