@@ -14,7 +14,7 @@
 
 <script lang="ts">
   import VenueListing from './_VenueListing.svelte'
-  import IconButton from '$lib/components/IconButton.svelte'
+  import Button from '$lib/components/Button.svelte'
   import Modal from '$lib/components/Modal.svelte'
   import SaveVenueForm from './_SaveVenueForm.svelte'
 
@@ -31,11 +31,16 @@
       <p class="text-center">You don't organize any venues, yet</p>
     {/each}
   </div>
-  <IconButton text="Create a venue" on:click={() => isSavingModalShown = true} variant="brand">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-  </IconButton>
+  <Button on:click={() => isSavingModalShown = true} variant="contained" size="md">
+    <div class="flex items-center gap-3">
+      <div class="w-5 h-5 text-gray-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={3} stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+      </div>
+      Create a new venue
+    </div>
+  </Button>
 </div>
 
 <Modal title="Create a venue" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>

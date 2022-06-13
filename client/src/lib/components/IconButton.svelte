@@ -1,9 +1,8 @@
 <script lang="ts">
-  export let text: string = ''
   export let ariaLabel: string = ''
   export let isPinging: boolean = false
   export let size: 'sm' | 'md' | 'lg' = 'md'
-  export let variant: 'default' | 'brand' = 'default'
+  export let variant: 'default' | 'brand' = 'default' // TODO Remove variants from icon button?
   
   $: iconSizeStyles = size === 'sm' ? 'h-4 w-4' : (size === 'lg' ? 'h-14 w-14' : 'h-5 w-5')
   
@@ -21,13 +20,7 @@
   active:scale-90 ${buttonSizeStyles} ${variantStyles} ${pingingStyles}`} 
   on:click aria-label={ariaLabel}
 >
-  <!-- TODO align icon baseline to ensure it's centered relative to the text -->
   <div class={`${iconSizeStyles}`}>
     <slot />
   </div>
-  {#if text}
-    <div class="pl-2 pr-1">
-      {text}
-    </div>
-  {/if}
 </button>
