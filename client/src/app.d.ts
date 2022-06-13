@@ -1,5 +1,13 @@
 /// <reference types="@sveltejs/kit" />
 
+declare type SearchQuery = {
+  after: string,
+  before: string,
+  searchTerm: string,
+  lat: string,
+  lng: string
+}
+
 declare type Venue = {
   _id: string
   organizer: string
@@ -29,14 +37,7 @@ declare type VenueEvent = {
   startsAt: string
   endsAt?: string
   venue: Venue
-  hall: {
-    _id: string
-    name: string
-    description: string
-    seats: {
-      _id: string
-    }[]
-  }
+  hall: string
   createdAt: string
   updatedAt: string
 }
