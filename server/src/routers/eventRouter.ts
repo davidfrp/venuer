@@ -12,22 +12,37 @@ const router = Router({ mergeParams: true })
 
 router.get('/', errorCatcher(async (req, res) => {
   const {
-    venue: venueSlug, after, before, lng, lat, distance
+    venue: venueSlug, after, before, lng, lat, distance, searchTerm
   } = validate(req.query, getEventSchema)
 
   const filter: {
-    startsAt: {
-      $gte?: Date
+    $or?: Record<string, RegExp>[]
+    startsAt?: {
+      $gte?: Date,
       $lte?: Date
-    }
-    'venue._id'?: string
+    },
+    'venue._id'?: string,
     'venue.location.entranceCoordinates'?: unknown
-  } = { startsAt: {} }
+  } = {}
 
-  filter.startsAt.$gte = new Date(Number(after) || 0)
+  if (after || before) {
+    filter.startsAt = {}
 
-  if (before) {
-    filter.startsAt.$lte = new Date(Number(before))
+    if (after) {
+      filter.startsAt.$gte = after
+    }
+
+    if (before) {
+      filter.startsAt.$lte = before
+    }
+  }
+
+  if (searchTerm) {
+    filter.$or = [
+      { name: new RegExp(searchTerm, 'gi') },
+      { description: new RegExp(searchTerm, 'gi') },
+      { 'venue.name': new RegExp(searchTerm, 'gi') }
+    ]
   }
 
   if (venueSlug) {
@@ -89,7 +104,8 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     throw new BadRequestError('\'name\' and \'startsAt\' results in a \'slug\' that is already used by another event')
   }
 
-  const venue = await Venue.findOne({ slug: req.params.venueSlug })
+  const venueSlug = req.params.venueSlug ?? req.body.venue?.slug
+  const venue = await Venue.findOne({ slug: venueSlug })
   if (!venue) {
     throw new NotFoundError('Venue not found')
   }
