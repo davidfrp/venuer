@@ -21,12 +21,16 @@
   export let venues: Venue[]
 
   let isSavingModalShown: boolean
+
+  const handleRemoval = (venue: Venue) => {
+    venues = venues.filter(v => v.slug !== venue.slug)
+  }
 </script>
 
 <div class="flex flex-col gap-6 items-center pt-6">
   <div class="w-full divide-y">
     {#each venues as venue}
-      <VenueListing {venue} />
+      <VenueListing {venue} onRequestRemoval={handleRemoval} />
     {:else}
       <p class="text-center">You don't organize any venues, yet</p>
     {/each}
