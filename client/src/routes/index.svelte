@@ -24,20 +24,19 @@
   export let events: VenueEvent[]
 </script>
 
+<!-- TODO fill out meta tags for '/' -->
 <svelte:head>
-  <title>Venuer - Find an event!</title>
+  <title>Find an event - Venuer</title>
   <meta name="description" content="" />
   <meta property="og:title" content="" />
   <meta property="og:description" content="" />  
   <meta property="og:image" content="" />
 </svelte:head>
 
-<div class="mt-6">
-  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    {#each events as event}
-      <EventCard {event} />
-    {:else}
-      <h2 class="text-xl">No exact matches</h2>
-    {/each}
-  </div>
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {#each events as event}
+    <EventCard {event} />
+  {:else}
+    <h2 class="text-xl">No exact matches</h2>
+  {/each}
 </div>

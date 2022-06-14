@@ -27,7 +27,7 @@
   }
 </script>
 
-<form class="mx-auto max-w-lg flex flex-col space-y-10" on:submit|preventDefault={handleSubmit}>
+<form class="mx-auto max-w-lg flex flex-col space-y-10 md:mt-6" on:submit|preventDefault={handleSubmit}>
   <div class="space-y-3">
     <h1 class="text-4xl font-semibold">Create account</h1>
     <p>If you already have an account, <a href="/login">click here to log in</a>.</p>

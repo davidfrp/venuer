@@ -24,6 +24,15 @@
   ]
 </script>
 
+<!-- TODO fill out meta tags for '/me/**' -->
+<svelte:head>
+  <title>Your account - Venuer</title>
+  <meta name="description" content="" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />  
+  <meta property="og:image" content="" />
+</svelte:head>
+
 <!-- TODO Remove this comment: 960px 1024px for max-width -->
 <div class="pt-6 max-w-4xl mx-auto">
   <h1 class="font-semibold mb-8">Manage your account</h1>
@@ -33,7 +42,7 @@
         <a
           sveltekit:prefetch
           class="no-base p-4 items-center font-semibold whitespace-nowrap 
-          border-b-2 hover:no-underline text-gray-600 last:flex-1"
+          border-b-2 hover:no-underline text-gray-500 last:flex-1"
           class:border-gray-200={tab.routeId !== $page.routeId}
           class:border-gray-700={tab.routeId === $page.routeId}
           class:text-gray-900={tab.routeId === $page.routeId}

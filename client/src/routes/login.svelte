@@ -7,9 +7,8 @@
   import { session, page } from '$app/stores'
   import { goto } from '$app/navigation'
 
-  // TODO Remove default values
-  let email: string = 'davidfrp@outlook.dk'
-  let password: string = '12345678Aa'
+  let email: string
+  let password: string
 
   let errorMessage: string
 
@@ -34,7 +33,7 @@
   }
 </script>
 
-<form class="mx-auto max-w-lg flex flex-col space-y-10" on:submit|preventDefault={handleSubmit}>
+<form class="mx-auto max-w-lg flex flex-col space-y-10 md:mt-6" on:submit|preventDefault={handleSubmit}>
   <div class="space-y-3">
     <h1 class="text-4xl font-semibold">Welcome back</h1>
     <p>If you don't have an account, <a href="/register{ redirectTo ? `?redirectTo=${redirectTo}` : '' }">click here to sign up</a>.</p>

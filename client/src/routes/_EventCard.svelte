@@ -9,10 +9,10 @@
   </div>
   <div class="py-3">
     <h1 class="text-lg font-semibold truncate">{event.name}</h1>
-    <div class="text-sm text-gray-600">
+    <div class="text-sm text-gray-500">
       {event.venue.location.city}, {event.venue.name}
     </div>
-    <div class="text-sm text-gray-600">
+    <div class="text-sm text-gray-500">
       <time datetime={event.startsAt}>
         {dayjs(event.startsAt).format('dddd MMM D ')}
       </time>
