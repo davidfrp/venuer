@@ -6,13 +6,11 @@
   export let id: string | null = null
   export let title: string = ''
   export let isOpen: boolean = false
-  export let focusRef: HTMLElement | null = null
   export let onRequestClose: () => void
   export let ignoreNavbar: boolean = true
-
-  $: if (isOpen) {
-    focusRef?.focus()
-  }
+  
+  let focusRef: HTMLElement
+  $: isOpen && focusRef?.focus()
 
   $: sizeStyles = size === 'sm' ? 'sm:max-w-sm' : (size === 'lg' ? 'sm:max-w-3xl' : 'sm:max-w-md')
 </script>
@@ -24,6 +22,8 @@
       overflow-hidden pb-[env(safe-area-inset-bottom)] sm:rounded-b-xl
       sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2
       sm:bottom-auto ${sizeStyles}`} in:scale={{start: 1.1, duration: 200}}
+      bind:this={focusRef}
+      tabindex="-1"
     >
       {#if title}
         <header class="p-6 pb-0 pt-8">
