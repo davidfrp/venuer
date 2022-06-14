@@ -21,6 +21,7 @@ app.use(allowCors)
 app.use(cookieParser())
 app.use(express.json())
 
+// TODO Use smth like helmet
 // TODO Add rate limiter
 
 // Routers

@@ -4,14 +4,12 @@ import { VenueDocument } from './venueModel'
 
 interface HallDocument extends Document {
   name: string
-  description?: string
   venue: VenueDocument
   seats: SeatDocument[]
 }
 
 const HallSchema = new Schema({
   name: { type: String, required: true },
-  description: { type: String },
   venue: { type: Schema.Types.ObjectId, ref: 'Venue', required: true },
   seats: [{ type: Schema.Types.ObjectId, ref: 'Seat', default: [] }]
 }, { timestamps: true })

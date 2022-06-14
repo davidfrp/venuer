@@ -1,14 +1,18 @@
 import { model, Schema, Document } from 'mongoose'
-import { HallDocument } from './hallModel'
 import { LocationDocument, LocationSchema } from './locationSchema'
+import { SeatDocument } from './seatModel'
 import { UserDocument } from './userModel'
+
 interface VenueDocument extends Document {
   organizer: UserDocument
   name: string
   slug: string
   description: string
   location: LocationDocument
-  halls: HallDocument[]
+  halls: {
+    name: string
+    seats: SeatDocument[]
+  }[]
 }
 
 const VenueSchema = new Schema({
@@ -17,7 +21,12 @@ const VenueSchema = new Schema({
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   location: { type: LocationSchema, required: true },
-  halls: [{ type: Schema.Types.ObjectId, ref: 'Hall', default: [] }]
+  halls: [
+    {
+      name: { type: String, required: true },
+      seats: [{ type: Schema.Types.ObjectId, ref: 'Seat' }]
+    }
+  ]
 }, { timestamps: true })
 
 VenueSchema.set('toJSON', {
@@ -28,7 +37,7 @@ VenueSchema.set('toJSON', {
 // TODO FIX ALL PRE REMOVE
 VenueSchema.pre('remove', async function (next) {
   await this.model('Event').deleteMany({ 'venue._id': this._id })
-  await this.model('Hall').deleteMany({ venue: this._id })
+  // await this.model('Hall').deleteMany({ venue: this._id })
   next()
 })
 
