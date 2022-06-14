@@ -4,62 +4,71 @@
   import Calendar from './Calendar.svelte'
   import IconButton from './IconButton.svelte'
   import TextInput from './TextInput.svelte'
-  import dayjs from 'dayjs'
-  
-  export let onSearch: (query: Partial<Omit<SearchQuery, 'after' | 'before'> & {
+
+  type StrictSearchQuery = Partial<Omit<SearchQuery, 'after' | 'before'> & {
     after: Date
     before: Date
-  }>) => void
+  }>
 
-  export let query: Partial<Omit<SearchQuery, 'after' | 'before'> & {
-    after: Date,
-    before: Date
-  }> = {}
+  export let onSearch: (query: StrictSearchQuery) => void
+  export let query: StrictSearchQuery
+
+  let tempQuery: StrictSearchQuery
+
+  const populate = () => {
+    tempQuery = structuredClone(query) ?? {} as StrictSearchQuery
+  }
+
+  $: query, populate()
 
   let errorMessage: string
 
-  const handleReset = () => (query = {})
+  const handleReset = () => (tempQuery = {})
 
-  const handleSubmit = () => onSearch(query)
+  const handleSubmit = () => onSearch(tempQuery)
 
   let inputRef: HTMLInputElement
-  let isUsingLocation: boolean
 
-  $: if (isUsingLocation) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        query.lat = coords.latitude.toString()
-        query.lng = coords.longitude.toString()
-      }, () => {
-        errorMessage = 'Could not get your location.'
-      })
+  $: isUsingLocation = !!(tempQuery.lat && tempQuery.lng)
+
+  const handleUseLocation = () => {
+    if (isUsingLocation) {
+      tempQuery.lat = tempQuery.lng = undefined
+    } else {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(({ coords }) => {
+          tempQuery.lat = coords.latitude.toString()
+          tempQuery.lng = coords.longitude.toString()
+        }, () => {
+          errorMessage = 'Could not get your location.'
+        })
+      }
     }
-  } else {
-    query.lat = query.lng = undefined
   }
 </script>
 
 <div class="relative pb-12">
   {#if errorMessage}
     <div class="mb-6">
-      <Alert message={errorMessage} title="Something went wrong" />
+      <Alert message={errorMessage} title="Your search could not be fulfilled" />
     </div>
   {/if}
-  <div class="divide-y">
-    <div class="pb-6 space-y-3">
+  <div class="pb-6 space-y-6">
+    <div class="space-y-3">
       <h2 class="text-lg font-semibold">Which place or event?</h2>
       <div class="flex items-center gap-3">
         <div class="flex-1">
           <TextInput
             bind:inputRef
-            bind:value={query.searchTerm}
+            bind:value={tempQuery.searchTerm}
             placeholder="Search for an event or venue"
             id="searchTerm"
           />
         </div>
-        {#if query.searchTerm}
+        {#if tempQuery.searchTerm}
+          <!-- TODO Put this into a named function -->
           <IconButton size="sm" on:click={() => {
-            query.searchTerm = undefined
+            tempQuery.searchTerm = undefined
             inputRef?.focus()
           }}>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={3} stroke-linecap="round" stroke-linejoin="round">
@@ -69,18 +78,18 @@
         {/if}
       </div>
     </div>
-    <div class="py-6 space-y-3">
+    <div class="space-y-3">
       <h2 class="text-lg font-semibold">When?</h2>
-      <Calendar bind:startDate={query.after} bind:endDate={query.before} />
+      <Calendar bind:startDate={tempQuery.after} bind:endDate={tempQuery.before} />
     </div>
-    <div class="py-6 space-y-3">
+    <div class="space-y-3">
       <h2 class="text-lg font-semibold">Where?</h2>
       <div class="flex justify-start">
         <label for="near" class="flex flex-col flex-1 cursor-pointer">
           Only nearby
           <span class="text-sm text-gray-500">Limit results to be near your location</span>
         </label>
-        <input type="checkbox" name="near" id="near" bind:checked={isUsingLocation} />
+        <input type="checkbox" name="near" id="near" bind:checked={isUsingLocation} on:change={handleUseLocation} />
       </div>
     </div>
   </div>
