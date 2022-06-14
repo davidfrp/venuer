@@ -30,16 +30,6 @@ export const validate = (
   return {}
 }
 
-// export const validObjectIdSchema = Joi.object().min(1).pattern(
-//   /^/,
-//   Joi.string().custom((value, helpers) => {
-//     if (isValidObjectId(value)) {
-//       return value
-//     }
-//     return helpers.error('any.invalid')
-//   }).message('{{#label}} must be a valid ObjectId')
-// )
-
 const isValidObjectIdValidator: Joi.CustomValidator = (value, helpers) => {
   if (isValidObjectId(value)) {
     return value
