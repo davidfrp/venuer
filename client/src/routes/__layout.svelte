@@ -23,6 +23,8 @@
 
 <Navbar />
 
-<main class="pt-20 px-6 lg:px-24">
+<main class="pt-[8.35rem] md:pt-[5.15rem] px-6 pb-6 lg:px-24 mt-6">
+<!-- TODO Remove unused comment, variable px. -->
+<!-- <main class="mt-20 pt-6 px-6 lg:px-[var(--page-px)]"> -->
   <slot />
 </main>
