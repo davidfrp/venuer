@@ -4,14 +4,14 @@
 
   // $: sizeStyles = size === 'sm' ? 'px-3 py-1' : size === 'lg' 
   //   ? 'w-full h-14' : 'p-2.5'
-  $: sizeStyles = size === 'sm' ? 'px-3 py-1' : (
+  $: sizeStyles = size === 'sm' ? 'px-3 py-1 min-w-0' : (
     size === 'base' ? 'p-2.5' : (
       size === 'md' ? 'px-6 py-3.5' : 'w-full h-14'
     )
   )
-  $: baseStyles = variant !== 'none' ? `min-w-[4rem] leading-5
-    text-opacity-[0.85] font-semibold bg-brand rounded-lg
-    transition-colors w-full h-full ${sizeStyles}` : ''
+  $: baseStyles = variant !== 'none' ? `relative w-full h-full min-w-[4rem] 
+    flex justify-center items-center leading-5 text-opacity-[0.85] 
+    font-semibold bg-brand rounded-lg transition-colors ${sizeStyles}` : ''
 
   $: containedStyles = variant === 'contained' ? `text-white text-opacity-100 
     bg-opacity-100 hover:bg-opacity-90` : ''
@@ -23,7 +23,7 @@
     bg-opacity-0 hover:bg-opacity-10 border-2 border-brand border-opacity-50 
     hover:border-opacity-100` : ''
   
-  $: disabledStyles = isDisabled ? `opacity-[0.38] pointer-events-none` : ''
+  $: disabledStyles = isDisabled || isLoading ? `opacity-[0.38] pointer-events-none` : ''
   
   $: styles = [baseStyles, containedStyles, outlinedStyles, textStyles, disabledStyles].join(' ')
 
@@ -31,10 +31,16 @@
   export let type: Type = 'submit'
   export let size: 'sm' | 'base' | 'md' | 'lg' = 'base'
   export let isDisabled: boolean = false
+  export let isLoading: boolean = false
 </script>
 
 <div>
   <button {type} class={styles} on:click>
-    <slot />
+    {#if isLoading}
+      <div class="absolute animate-spin h-7 w-7 rounded-full border-4 border-transparent border-r-white"></div>
+    {/if}
+    <div class:invisible={isLoading}>
+      <slot />
+    </div>
   </button>
 </div>
