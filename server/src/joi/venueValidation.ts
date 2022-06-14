@@ -1,4 +1,5 @@
 import * as Joi from 'joi'
+import { validObjectIdSchema } from './validator'
 
 export const name = Joi.string().trim().min(3).max(2048)
 
@@ -6,8 +7,7 @@ export const description = Joi.string().trim().min(3).max(2048)
 
 // TODO Check all min/max/length/... etc. rules everywhere are consistent
 export const location = Joi.object().keys({
-  id: Joi.any().strip(),
-  _id: Joi.any().strip(),
+  _id: validObjectIdSchema.strip(),
   country: Joi.string().trim().empty('').required(),
   city: Joi.string().trim().empty('').required(),
   postalCode: Joi.string().trim().empty('').required(),
@@ -20,14 +20,22 @@ export const location = Joi.object().keys({
   additionalInfo: Joi.string().trim().empty('')
 })
 
+export const halls = Joi.array().items(Joi.object().keys({
+  _id: validObjectIdSchema,
+  name: name.required(),
+  seats: Joi.array().items(validObjectIdSchema).default([])
+}))
+
 export const createVenueSchema = Joi.object({
   name: name.required(),
   description: description.required(),
-  location: location.required()
+  location: location.required(),
+  halls: halls.default([])
 })
 
 export const updateVenueSchema = Joi.object({
   name,
   description,
-  location
+  location,
+  halls
 })
