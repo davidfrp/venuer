@@ -87,8 +87,8 @@
   }
 </script>
 
-<button class="w-full sm:w-96 py-2.5 flex items-center text-left border bg-gray-100 rounded-full" on:click={() => isOpen = true}>
-  <div class="pl-5 pr-4 text-gray-600">
+<button class="w-full py-2.5 flex items-center text-left border bg-gray-100 rounded-full" on:click={() => isOpen = true}>
+  <div class="pl-5 pr-4 text-gray-500">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={3} stroke-linecap="round" stroke-linejoin="round">
       <circle cx={11} cy={11} r={8} />
       <path d="m21 21-4.35-4.35" />
@@ -100,7 +100,7 @@
     </div>
     <div class="flex gap-1.5 text-xs text-gray-500">
       <div>{formatDatesToHumanReadable(initializedQuery.after, initializedQuery.before)}</div>
-      <span aria-hidden>&bull;</span>
+      <span aria-hidden class="font-semibold">·</span>
       <div>{initializedQuery.lat && initializedQuery.lng ? 'Near you' : 'Anywhere'}</div>
     </div>
   </div>

@@ -9,7 +9,7 @@
   $: buttonSizeStyles = size === 'sm' ? 'p-1' : (size === 'lg' ? 'h-14 w-14' : 'p-2.5')
 
   $: variantStyles = variant === 'brand' ? `text-white bg-brand hover:bg-opacity-80 
-    active:bg-opacity-90` : 'text-gray-600 bg-gray-100 border hover:bg-gray-200 active:bg-gray-300'
+    active:bg-opacity-90` : 'text-gray-500 bg-gray-100 border hover:bg-gray-200 active:bg-gray-300'
 
   $: pingingStyles = isPinging ? `relative before:absolute before:left-0 before:w-full 
     before:h-full before:rounded-full before:bg-inherit before:bg-opacity-10 

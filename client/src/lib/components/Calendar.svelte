@@ -77,7 +77,7 @@
       <div class="w-full pb-4 pt-2">
         {dayjs(dayjs(dateOfMonthShown).add(i, 'month').toDate()).format('MMMM YYYY')}
       </div>
-      <div class="flex w-full h-10 items-center text-xs text-gray-600 font-semibold">
+      <div class="flex w-full h-10 items-center text-xs text-gray-500 font-semibold">
         <div class="basis-[calc(100%/7)]">Mo</div>
         <div class="basis-[calc(100%/7)]">Tu</div>
         <div class="basis-[calc(100%/7)]">We</div>

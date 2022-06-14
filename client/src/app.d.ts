@@ -20,9 +20,15 @@ declare type Venue = {
     postalCode: string | undefined
     address: string | undefined
     entrance: string | undefined
-    entranceCoordinates: string | undefined
     additionalInfo: string | undefined
-  }
+  },
+  halls: {
+    _id?: string
+    name: string
+    seats: {
+      _id: string
+    }[]
+  }[]
   createdAt: string
   updatedAt: string
 }
