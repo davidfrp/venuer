@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let ariaLabel: string = ''
+  export let ariaLabel: string
   export let isPinging: boolean = false
   export let size: 'sm' | 'md' | 'lg' = 'md'
   export let variant: 'default' | 'brand' = 'default' // TODO Remove variants from icon button?
@@ -18,7 +18,7 @@
 
 <button type="button" class={`transition-all rounded-full flex items-center 
   active:scale-90 ${buttonSizeStyles} ${variantStyles} ${pingingStyles}`} 
-  on:click aria-label={ariaLabel}
+  on:click aria-label={ariaLabel} title={ariaLabel}
 >
   <div class={`${iconSizeStyles}`}>
     <slot />

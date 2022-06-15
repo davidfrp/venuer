@@ -57,14 +57,14 @@
 
 <div class="relative">
   <div class="absolute left-2 top-0.5">
-    <IconButton on:click={() => offsetShownMonth(-1)}>
+    <IconButton ariaLabel="Show previous month" on:click={() => offsetShownMonth(-1)}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-wull" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6"/>
       </svg>
     </IconButton>
   </div>
   <div class="absolute right-2 top-0.5">
-    <IconButton on:click={() => offsetShownMonth(1)}>
+    <IconButton ariaLabel="Show next month" on:click={() => offsetShownMonth(1)}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={2} stroke-linecap="round" stroke-linejoin="round">
         <path d="m9 18 6-6-6-6"/>
       </svg>
