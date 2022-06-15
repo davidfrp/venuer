@@ -2,14 +2,13 @@
   type Variant = 'text' | 'contained' | 'outlined' | 'none'
   type Type = 'submit' | 'reset' | 'button'
 
-  // $: sizeStyles = size === 'sm' ? 'px-3 py-1' : size === 'lg' 
-  //   ? 'w-full h-14' : 'p-2.5'
   $: sizeStyles = size === 'sm' ? 'px-3 py-1 min-w-0' : (
-    size === 'base' ? 'p-2.5' : (
-      size === 'md' ? 'px-6 py-3.5' : 'w-full h-14'
+    size === 'base' ? 'p-2.5 min-w-[4rem] ' : (
+      size === 'md' ? 'px-6 py-3.5 min-w-[4rem] ' : 'w-full h-14 min-w-[4rem]'
     )
   )
-  $: baseStyles = variant !== 'none' ? `relative w-full h-full min-w-[4rem] 
+
+  $: baseStyles = variant !== 'none' ? `relative w-full h-full
     flex justify-center items-center leading-5 text-opacity-[0.85] 
     font-semibold bg-brand rounded-lg transition-colors ${sizeStyles}` : ''
 
@@ -32,10 +31,11 @@
   export let size: 'sm' | 'base' | 'md' | 'lg' = 'base'
   export let isDisabled: boolean = false
   export let isLoading: boolean = false
+  export let focusRef: HTMLButtonElement | null = null
 </script>
 
 <div>
-  <button {type} class={styles} on:click>
+  <button {type} class={styles} on:click bind:this={focusRef}>
     {#if isLoading}
       <div class="absolute animate-spin h-7 w-7 rounded-full border-4 border-transparent border-r-white"></div>
     {/if}
