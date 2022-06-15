@@ -9,18 +9,18 @@
 
   $: baseStyles = 'w-full h-10'
 
-  $: selectedDateStyles = !notInMonthStyles && 
+  $: selectedDateStyles = !notInMonthStyles && (
     (startDate && dayjs(date).isSame(startDate, 'day')) || 
-    (endDate && dayjs(date).isSame(endDate, 'day')) ? `relative text-white bg-brand` : ''
+    (endDate && dayjs(date).isSame(endDate, 'day'))) ? `relative text-white bg-brand` : ''
 
-  $: endDateStyles = !notInMonthStyles && 
+  $: endDateStyles = !notInMonthStyles && (
     (startDate && !endDate && dayjs(date).isSame(startDate, 'day')) ||
-    (endDate && dayjs(date).isSame(endDate, 'day')) ? `after:absolute after:-right-1 
+    (endDate && dayjs(date).isSame(endDate, 'day'))) ? `after:absolute after:-right-1 
     after:top-0 after:w-1 after:h-full after:rounded-r after:bg-brand` : ''
   
-  $: startDateStyles = !notInMonthStyles && 
+  $: startDateStyles = !notInMonthStyles && (
     (endDate && !startDate && dayjs(date).isSame(endDate, 'day')) ||
-    (startDate && dayjs(date).isSame(startDate, 'day')) ? `before:absolute before:top-0 
+    (startDate && dayjs(date).isSame(startDate, 'day'))) ? `before:absolute before:top-0 
     before:-left-1 before:w-1 before:h-full before:rounded-l before:bg-brand` : ''
 
   $: dateRangeStyles = !notInMonthStyles && 
