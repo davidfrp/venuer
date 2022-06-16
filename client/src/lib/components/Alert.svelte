@@ -1,13 +1,12 @@
 <script lang="ts">
   import { slide } from 'svelte/transition'
-  import { onMount } from 'svelte'
 
   export let title: string = ''
   export let message: string
 
   let alertRef: HTMLElement
 
-  $: if (message) alertRef?.scrollIntoView({ behavior: 'smooth' })
+  $: message, alertRef?.scrollIntoView({ behavior: 'smooth' })
 </script>
 
 <div
