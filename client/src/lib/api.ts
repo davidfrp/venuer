@@ -1,7 +1,9 @@
-const apiUrl: string = import.meta.env.VITE_API_BASE_URL
+import { dev } from '$app/env'
 
-type ApiResponse = [
-  data: Record<string, unknown>,
+const apiUrl: string = dev ? 'http://localhost:4000' : import.meta.env.VITE_API_BASE_URL
+
+export type ApiResponse = [
+  data: Record<string, unknown> | [Record<string, unknown>] | undefined,
   status: 'success' | 'error'
 ]
 
@@ -27,7 +29,7 @@ const request = async (
     credentials: 'include'
   })
 
-  let data: Record<string, unknown> = {}
+  let data: ApiResponse[0]
 
   try {
     data = await response.json()
