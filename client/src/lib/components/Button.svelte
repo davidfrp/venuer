@@ -10,7 +10,8 @@
 
   $: baseStyles = variant !== 'none' ? `relative w-full h-full
     flex justify-center items-center leading-5 text-opacity-[0.85] 
-    font-semibold bg-brand rounded-lg transition-colors ${sizeStyles}` : ''
+    font-semibold bg-brand rounded-lg transition-colors 
+    whitespace-nowrap ${sizeStyles}` : ''
 
   $: containedStyles = variant === 'contained' ? `text-white text-opacity-100 
     bg-opacity-100 hover:bg-opacity-90` : ''
