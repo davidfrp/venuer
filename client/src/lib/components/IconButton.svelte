@@ -1,6 +1,6 @@
 <script lang="ts">
   export let ariaLabel: string
-  export let isPinging: boolean = false
+  export let isDisabled: boolean = false
   export let size: 'sm' | 'md' | 'lg' = 'md'
   export let variant: 'default' | 'brand' = 'default' // TODO Remove variants from icon button?
   
@@ -11,13 +11,11 @@
   $: variantStyles = variant === 'brand' ? `text-white bg-brand hover:bg-opacity-80 
     active:bg-opacity-90` : 'text-gray-500 bg-gray-100 border hover:bg-gray-200 active:bg-gray-300'
 
-  $: pingingStyles = isPinging ? `relative before:absolute before:left-0 before:w-full 
-    before:h-full before:rounded-full before:bg-inherit before:bg-opacity-10 
-    before:animate-ping before:duration-1000` : ''
+  $: disabledStyles = isDisabled ? `opacity-[0.38] pointer-events-none` : ''
 </script>
 
 <button type="button" class={`transition-all rounded-full flex items-center 
-  active:scale-90 ${buttonSizeStyles} ${variantStyles} ${pingingStyles}`} 
+  active:scale-90 ${buttonSizeStyles} ${variantStyles} ${disabledStyles}`} 
   on:click aria-label={ariaLabel} title={ariaLabel}
 >
   <div class={`${iconSizeStyles}`}>
