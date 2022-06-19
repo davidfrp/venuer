@@ -9,9 +9,9 @@
   export let status: number
 </script>
 
-<div class="p-12 mx-auto space-y-6 max-w-none sm:max-w-2xl min-h-full text-center ">
-  <h1 class="font-semibold text-6xl">Oops, something went wrong!</h1>
-  <p class="text-2xl">{error.message}</p>
+<div class="max-w-none sm:max-w-2xl md:mt-6 mx-auto text-center space-y-6">
+  <h1 class="text-4xl font-semibold">Oops, something went wrong!</h1>
+  <p>{error.message}</p>
   {#if dev && error.stack}
     <details class="w-full open:bg-slate-200">
       <summary class="block p-4 bg-inherit cursor-pointer select-none font-semibold">More details</summary>
