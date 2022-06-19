@@ -30,7 +30,7 @@
           <h1 class="text-2xl font-semibold">{title}</h1>
         </header>
       {/if}
-      <div class="p-6 max-h-[calc(80vh-4rem)] sm:max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
+      <div class="p-6 max-h-[calc(70vh-4rem)] sm:max-h-[calc(100vh-4rem-4rem)] overflow-hidden overflow-y-auto">
         <slot />
       </div>
     </aside>
