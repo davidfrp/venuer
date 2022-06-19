@@ -17,6 +17,7 @@
 <button type="button" class={`transition-all rounded-full flex items-center 
   active:scale-90 ${buttonSizeStyles} ${variantStyles} ${disabledStyles}`} 
   on:click aria-label={ariaLabel} title={ariaLabel}
+  tabindex={isDisabled ? -1 : 0}
 >
   <div class={`${iconSizeStyles}`}>
     <slot />
