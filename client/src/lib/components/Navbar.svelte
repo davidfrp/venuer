@@ -4,9 +4,7 @@
   import Searchbar from './Searchbar.svelte'
 </script>
 
-<!-- TODO Remove unused comment, variable px. -->
-<!-- <nav class="fixed top-0 z-10 w-full py-3 flex flex-wrap items-center justify-between px-6 lg:px-[var(--page-px)] border-b bg-white"> -->
-<nav class="fixed top-0 z-10 w-full py-3 flex flex-wrap gap-3 items-center justify-between px-6 lg:px-24 border-b bg-white">
+<nav class="fixed top-0 z-10 w-full py-3 flex flex-wrap gap-3 items-center justify-between px-6 lg:px-[var(--page-px)] border-b bg-white">
   <div class="flex-1 text-xl lowercase font-bold text-brand order-1">
     <a sveltekit:prefetch href="/" class="no-base px-3 py-2 -ml-3">Venuer</a>
   </div>
