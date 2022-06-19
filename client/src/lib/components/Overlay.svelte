@@ -23,15 +23,15 @@
 
       // Set event listeners upon next macrotask.
       setTimeout(() => {
-        document.addEventListener('keydown', handleKeyDown)
-        document.addEventListener('click', handleClick)
+        ref.addEventListener('keydown', handleKeyDown)
+        ref.addEventListener('click', handleClick)
         document.body.classList.add('overflow-hidden')
       }, 0)
     })
     
     onDestroy(() => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('click', handleClick)
+      ref.removeEventListener('keydown', handleKeyDown)
+      ref.removeEventListener('click', handleClick)
       document.body.classList.remove('overflow-hidden')
       document.body.removeChild(portalElement)
     })
