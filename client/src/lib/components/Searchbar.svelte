@@ -78,8 +78,15 @@
     let formatedText: string | undefined
     if (startDate) {
       formatedText = dayjs(startDate).format('MMM D')
-      if (endDate) {
+      if (!dayjs(startDate).isSame(dayjs(), 'year')) {
+        formatedText += `, ${dayjs(startDate).format('YYYY')}`
+      }
+
+      if (endDate && !dayjs(endDate).isSame(dayjs(startDate), 'day')) {
         formatedText += ' – ' + dayjs(endDate).format('MMM D')
+        if (!dayjs(endDate).isSame(dayjs(), 'year')) {
+          formatedText += `, ${dayjs(endDate).format('YYYY')}`
+        }
       }
     }
 
