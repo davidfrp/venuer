@@ -13,3 +13,6 @@ export const logout = async () => {
   session.set({ user: null })
   goto('/')
 }
+
+export const forgot = async (email: string) =>
+  await post('/auth/forgot', { email })
