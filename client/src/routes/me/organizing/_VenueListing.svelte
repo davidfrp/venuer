@@ -3,6 +3,7 @@
   import Modal from '$lib/components/Modal.svelte'
   import SaveVenueForm from './_SaveVenueForm.svelte'
   import DeleteVenueForm from './_DeleteVenueForm.svelte'
+  import { slide } from 'svelte/transition'
 
   export let venue: Venue
   export let onRequestRemoval: (venue: Venue) => void
@@ -21,15 +22,14 @@
   }
 </script>
 
-<div class="flex flex-col py-6">
-  <div class="self-start flex gap-3 items-center w-full">
-    <div class="flex-1 flex flex-col">
-      <span class="truncate font-semibold">{venue.name}</span>
-      <a href="/{venue.slug}">Go to venue page</a>
-    </div>
-    <Button variant="text" on:click={() => isSavingModalShown = true}>Edit</Button>
-    <Button variant="text" on:click={() => isDeletingModalShown = true}>Delete</Button>
+<div class="flex items-center py-6" transition:slide|local>
+  <div class="flex-1 flex flex-col min-w-0">
+    <span class="truncate">{venue.name}</span>
+    <span class="text-sm text-gray-500 truncate">{venue.location.address}</span>
+    <span class="text-sm text-gray-500 truncate">{venue.location.postalCode} {venue.location.city}</span>
   </div>
+  <Button variant="text" on:click={() => isSavingModalShown = true}>Edit</Button>
+  <Button variant="text" on:click={() => isDeletingModalShown = true}>Delete</Button>
 </div>
 
 <Modal title="Edit venue" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
