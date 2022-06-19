@@ -35,8 +35,8 @@
   export let focusRef: HTMLButtonElement | null = null
 </script>
 
-<div>
-  <button {type} class={styles} on:click bind:this={focusRef}>
+<div class="rounded-lg bg-white">
+  <button {type} class={styles} on:click bind:this={focusRef} tabindex={isDisabled ? -1 : 0}>
     {#if isLoading}
       <div class="absolute animate-spin h-7 w-7 rounded-full border-4 border-transparent border-r-white"></div>
     {/if}
