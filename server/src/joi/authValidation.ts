@@ -1,5 +1,4 @@
 import * as Joi from 'joi'
-import { string } from 'joi'
 import { name, email, password } from './userValidation'
 
 export const registerSchema = Joi.object({
@@ -8,13 +7,12 @@ export const registerSchema = Joi.object({
   password: password.required()
 })
 
-export const registerTypes = {
-  name: string,
-  email: string,
-  password: string
-}
-
 export const loginSchema = Joi.object({
+  name: name.strip(),
   email: email.required(),
   password: password.required()
+})
+
+export const forgotSchema = Joi.object({
+  email: email.required()
 })
