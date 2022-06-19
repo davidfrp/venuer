@@ -6,7 +6,6 @@ import { errorCatcher } from '../utils'
 import { createVenueSchema, updateVenueSchema } from '../joi/venueValidation'
 import { validate } from '../joi/validator'
 import eventRouter from './eventRouter'
-import hallRouter from './hallRouter'
 
 const router = Router()
 
@@ -99,6 +98,5 @@ router.delete('/:slug', authContext, errorCatcher(async (req, res) => {
 }))
 
 router.use('/:venueSlug/events', eventRouter)
-router.use('/:venueSlug/halls', hallRouter)
 
 export default router

@@ -10,6 +10,7 @@ interface VenueDocument extends Document {
   description: string
   location: LocationDocument
   halls: {
+    _id: string
     name: string
     seats: SeatDocument[]
   }[]

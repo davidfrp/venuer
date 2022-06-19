@@ -4,9 +4,8 @@ import { Event } from '../models/eventModel'
 import { validate } from '../joi/validator'
 import { createEventSchema, getEventSchema } from '../joi/eventValidation'
 import { BadRequestError, ForbiddenError, NotFoundError } from '../errors'
-import { Venue } from '../models/venueModel'
+import { Venue, VenueDocument } from '../models/venueModel'
 import { authContext } from '../middleware/authContext'
-import { Hall } from '../models/hallModel'
 
 const router = Router({ mergeParams: true })
 
@@ -16,6 +15,7 @@ router.get('/', errorCatcher(async (req, res) => {
   } = validate(req.query, getEventSchema)
 
   const filter: {
+    $lookup?: {}
     $or?: Record<string, RegExp>[]
     startsAt?: {
       $gte?: Date,
@@ -62,14 +62,45 @@ router.get('/', errorCatcher(async (req, res) => {
     }
   }
 
-  const events = await Event.find(filter)
+  // const events = await Event.find({
+  //   $lookup: {
+  //     from: 'venues',
+  //     localField: 'venue',
+  //     foreignField: '_id',
+  //     as: 'venue'
+  //   },
+  //   ...filter
+  // })
+
+  const events = await Event.aggregate([
+    {
+      $lookup: {
+        from: 'venues',
+        localField: 'venue',
+        foreignField: '_id',
+        as: 'venue'
+      }
+    },
+    {
+      $unwind: {
+        path: '$venue',
+        preserveNullAndEmptyArrays: true
+      }
+    },
+    {
+      $match: {
+        ...filter
+      }
+    }
+  ])
+
   return res.send(events)
 }))
 
 router.get('/:slug', errorCatcher(async (req, res) => {
   const event = await Event.findOne({
     slug: req.params.slug
-  }).populate('hall').populate('venue')
+  }).populate('venue')
 
   if (event) {
     return res.send(event)
@@ -104,8 +135,18 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     throw new BadRequestError('\'name\' and \'startsAt\' results in a \'slug\' that is already used by another event')
   }
 
-  const venueSlug = req.params.venueSlug ?? req.body.venue?.slug
-  const venue = await Venue.findOne({ slug: venueSlug })
+  console.log(req.body)
+
+  const venueSlug: string = req.params.venueSlug ?? req.body.venue?.slug
+  const venue: (VenueDocument & {
+    _id: any
+  }) | null = await Venue.findOne({
+    $or: [
+      { slug: venueSlug },
+      { _id: req.body.venue?._id }
+    ]
+  })
+
   if (!venue) {
     throw new NotFoundError('Venue not found')
   }
@@ -114,7 +155,11 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     throw new ForbiddenError('You\'re not an organizer of the venue for this event')
   }
 
-  const isHallFound = !!await Hall.findById(hallId)
+  console.log(venue.halls)
+  console.log(hallId, typeof hallId)
+  console.log(venue.halls[0]._id, typeof venue.halls[0]._id)
+
+  const isHallFound = venue.halls.some(h => h._id.toString() === hallId)
   if (!isHallFound) {
     throw new NotFoundError('Hall not found')
   }

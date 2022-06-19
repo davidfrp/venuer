@@ -3,6 +3,7 @@ import { hash, compare } from 'bcrypt'
 import { Venue } from './venueModel'
 import { Order } from './orderModel'
 
+// TODO Add lastPasswordChangedAt and lastLoginAt
 interface UserDocument extends Document {
   name: string
   email: string
@@ -13,6 +14,7 @@ interface UserDocument extends Document {
 
 interface UserModel extends UserDocument {
   matchesPassword(password: string): Promise<boolean>
+  sendPasswordReset(): void
 }
 
 const UserSchema = new Schema({
@@ -26,13 +28,15 @@ const UserSchema = new Schema({
 UserSchema.set('timestamps', true)
 
 UserSchema.set('toJSON', {
-  // Removing sensitive fields whenever the model is transformed into JSON.
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   transform: (_, { __v, password, ...rest }) => rest
 })
 
 UserSchema.method('matchesPassword', async function (password: string) {
   return await compare(password, this.password)
+})
+
+UserSchema.method('sendPasswordReset', async function () {
 })
 
 UserSchema.pre('save', async function (next) {

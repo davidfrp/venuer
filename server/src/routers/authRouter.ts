@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken'
 import { errorCatcher } from '../utils'
 import { User } from '../models/userModel'
 import { UnauthorizedError, BadRequestError } from '../errors'
-import { registerSchema, loginSchema } from '../joi/authValidation'
+import { registerSchema, loginSchema, forgotSchema } from '../joi/authValidation'
 import { validate } from '../joi/validator'
 
 const router = Router()
@@ -24,7 +24,6 @@ router.post('/register', errorCatcher(async (req, res) => {
   return res.redirect(307, `${req.baseUrl}/login`)
 }))
 
-// TODO Add redirectTo param to redirect to a specific page after login.
 router.post('/login', errorCatcher(async (req, res) => {
   const { email, password } = validate(req.body, loginSchema)
 
@@ -53,5 +52,25 @@ router.post('/logout', errorCatcher(async (_, res) => {
   res.clearCookie('token')
   return res.sendStatus(204)
 }))
+
+router.post('/forgot', errorCatcher(async (req, res) => {
+  const { email } = validate(req.body, forgotSchema)
+
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    throw new BadRequestError('Email not registered')
+  }
+
+  // TODO Send email with link to reset password
+  user.sendPasswordReset()
+
+  return res.sendStatus(204)
+}))
+
+// TODO Implement password reset
+// router.post('/reset', errorCatcher(async (req, res) => {
+//   const { password, token } = validate(req.body, forgotSchema)
+// }))
 
 export default router

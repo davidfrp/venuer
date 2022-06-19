@@ -1,4 +1,4 @@
-import { model, Schema, Document } from 'mongoose'
+import { Schema, Document } from 'mongoose'
 import { SeatDocument } from './seatModel'
 import { VenueDocument } from './venueModel'
 
@@ -19,6 +19,4 @@ HallSchema.set('toJSON', {
   transform: (_, { __v, ...rest }) => rest
 })
 
-const Hall = model<HallDocument>('Hall', HallSchema)
-
-export { Hall, HallDocument, HallSchema }
+export { HallDocument, HallSchema }

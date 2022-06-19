@@ -1,6 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 import { HallDocument } from './hallModel'
-import { VenueDocument, VenueSchema } from './venueModel'
+import { VenueDocument } from './venueModel'
 
 interface EventDocument extends Document {
   venue: VenueDocument
@@ -15,7 +15,7 @@ interface EventDocument extends Document {
 }
 
 const EventSchema = new Schema({
-  venue: VenueSchema,
+  venue: { type: Schema.Types.ObjectId, ref: 'Venue', required: true },
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
