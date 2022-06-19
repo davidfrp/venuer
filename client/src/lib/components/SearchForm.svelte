@@ -13,19 +13,17 @@
   export let onSearch: (query: StrictSearchQuery) => void
   export let query: StrictSearchQuery
 
-  let tempQuery: StrictSearchQuery
-
-  const populate = () => {
-    tempQuery = structuredClone(query) ?? {} as StrictSearchQuery
-  }
-
-  $: query, populate()
+  let tempQuery: StrictSearchQuery = structuredClone(query) ?? {}
+  let isSearching: boolean
 
   let errorMessage: string
 
   const handleReset = () => (tempQuery = {})
 
-  const handleSubmit = () => onSearch(tempQuery)
+  const handleSubmit = () => {
+    isSearching = true
+    onSearch(tempQuery)
+  }
 
   let inputRef: HTMLInputElement
 
@@ -45,6 +43,17 @@
       }
     }
   }
+
+  const handleClearSearch = () => {
+    tempQuery.searchTerm = undefined
+    inputRef?.focus()
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
+    }
+  }
 </script>
 
 <div class="relative pb-12">
@@ -59,18 +68,15 @@
       <div class="flex items-center gap-3">
         <div class="flex-1">
           <TextInput
-            bind:inputRef
+            on:keydown={handleKeyDown}
             bind:value={tempQuery.searchTerm}
             placeholder="Search for an event or venue"
             id="searchTerm"
+            bind:inputRef
           />
         </div>
         {#if tempQuery.searchTerm}
-          <!-- TODO Put this into a named function -->
-          <IconButton size="sm" on:click={() => {
-            tempQuery.searchTerm = undefined
-            inputRef?.focus()
-          }}>
+          <IconButton on:click={handleClearSearch} ariaLabel="Clear" size="sm">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={3} stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 6 6 18M6 6l12 12"/>
             </svg>
@@ -97,7 +103,7 @@
     <Button variant="text" on:click={handleReset}>
       Clear all
     </Button>
-    <Button variant="contained" size="md" on:click={handleSubmit}>
+    <Button isLoading={isSearching} variant="contained" size="md" on:click={handleSubmit}>
       Search
     </Button>
   </div>
