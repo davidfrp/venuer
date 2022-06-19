@@ -1,4 +1,4 @@
-import { get, post, patch, del } from '$lib/api'
+import { get, post, patch, del, type ApiResponse } from '$lib/api'
 
 export const getVenues = (fetch?: typeof window.fetch) =>
   get('/venues', fetch)
@@ -17,7 +17,7 @@ export const getVenueEvents = (slug: string, fetch?: typeof window.fetch) =>
 
 // TODO Inherit service methods from abstract base class, adding resource path on top.
 export const saveVenue = async ({ slug, ...venue }: Record<string, unknown>) => {
-  let response: [Record<string, unknown>, 'error' | 'success']
+  let response: ApiResponse
 
   if (slug) {
     response = await patch(`/venues/${slug}`, venue, fetch)
