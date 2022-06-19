@@ -5,9 +5,13 @@
 @tailwind utilities;
 
 @layer components {
+  :root {
+    --page-px: 6rem;
+  }
+
   body {
     font-family: 'Poppins', sans-serif;
-    @apply text-gray-900
+    @apply text-gray-900;
   }
 
   a:not(.no-base) {
