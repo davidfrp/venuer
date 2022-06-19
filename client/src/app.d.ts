@@ -54,8 +54,13 @@ declare type Seat = {
 }
 
 declare type User = {
-  id: string
+  _id: string
+  name: string
+  email: string
+  isVerified: boolean
   role: number
+  createdAt: Date,
+  updatedAt: Date
 }
 
 // See https://kit.svelte.dev/docs/types#app

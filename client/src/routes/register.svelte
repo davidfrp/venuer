@@ -12,20 +12,28 @@
   let password: string
 
   let errorMessage: string
+  let isRegistering: boolean
 
   const handleSubmit = async () => {
+    isRegistering = true
     const [data, status] = await register(name, email, password)
     if (status === 'success') {
       const [data, status] = await getMe()
       if (status === 'success') {
         session.set({ user: data as User })
-        goto('/')
+        await goto('/')
       }
     } else {
-      errorMessage = data.message as string
+      errorMessage = (data as Record<string, unknown>).message as string
     }
+
+    isRegistering = false
   }
 </script>
+
+<svelte:head>
+  <title>Sign up - Venuer</title>
+</svelte:head>
 
 <form class="mx-auto max-w-lg flex flex-col space-y-10 md:mt-6" on:submit|preventDefault={handleSubmit}>
   <div class="space-y-3">
@@ -46,7 +54,7 @@
       <TextInput id="password" label="Password" isPassword bind:value={password} />
     </div>
     <div class="col-span-2">
-      <Button variant="contained" size="lg">Create account</Button>
+      <Button isLoading={isRegistering} variant="contained" size="lg">Create account</Button>
     </div>
   </div>
 </form>

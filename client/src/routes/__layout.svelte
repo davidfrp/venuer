@@ -5,10 +5,7 @@
   export const load: Load = async ({ fetch, session }) => {
     const [data, status] = await getMe(fetch as any)
     if (status === 'success') {
-      session.user = {
-        id: data._id as string,
-        role: data.role as number
-      }
+      session.user = data as User
     }
     return { status: 200 }
   }
@@ -23,8 +20,6 @@
 
 <Navbar />
 
-<main class="pt-[8.35rem] md:pt-[5.15rem] px-6 pb-6 lg:px-24 mt-6">
-<!-- TODO Remove unused comment, variable px. -->
-<!-- <main class="mt-20 pt-6 px-6 lg:px-[var(--page-px)]"> -->
+<main class="pt-[8.35rem] md:pt-[5.15rem] px-6 pb-6 lg:px-[var(--page-px)] mt-6">
   <slot />
 </main>
