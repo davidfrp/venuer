@@ -8,28 +8,31 @@
   export let onSaved: (venue: Venue) => void
   export let venue: Venue | undefined = undefined
   
-  let tempVenue: Venue
-
-  const populate = () => {
-    tempVenue = structuredClone(venue) ?? { location: {}, halls: [] } as any
-  }
-
-  $: venue, populate()
+  let tempVenue: Venue = structuredClone(venue) ?? { location: {}, halls: [] } as any
 
   let errorMessage: string
   let isSaving: boolean
 
   const handleSubmit = async () => {
     isSaving = true
+
     const slug = venue?.slug
     const { name, description, location, halls } = tempVenue ?? {}
-    const [data, status] = await saveVenue({ slug, name, description, location, halls })
-    isSaving = false
+    const [data, status] = await saveVenue({
+      slug,
+      name,
+      description,
+      location,
+      halls
+    })
+
     if (status === 'success') {
       onSaved(data as Venue)
     } else {
-      errorMessage = data.message as string
+      errorMessage = (data as Record<string, unknown>).message as string
     }
+
+    isSaving = false
   }
 </script>
 
@@ -41,30 +44,30 @@
   <div class="space-y-3">
     <h2 class="text-lg font-semibold">General details</h2>
     <div class="space-y-6">
-      <TextInput id="name" isRequired bind:value={tempVenue.name} label="Name" placeholder="PRYZM, Classical Hall, etc." />
-      <TextInput id="description" bind:value={tempVenue.description} label="Description" />
-    </div>
-  </div>
-  <div class="space-y-3">
-    <h2 class="text-lg font-semibold">Location</h2>
-    <div class="space-y-6">
-      <TextInput id="country" bind:value={tempVenue.location.country} label="Country" placeholder="Farawayistan" />
-      <TextInput id="city" bind:value={tempVenue.location.city} label="City" placeholder="Anytown" />
-      <TextInput id="postalCode" bind:value={tempVenue.location.postalCode} label="Postal code" placeholder="1337" />
-      <TextInput id="address" bind:value={tempVenue.location.address} label="Street name and number" placeholder="Someville Avenue 42" />
-      <TextInput id="additionalInfo" bind:value={tempVenue.location.additionalInfo} label="Additional information" />
+      <TextInput isRequired id="name" bind:value={tempVenue.name} label="Name" placeholder="PRYZM, Classical Hall, etc." />
+      <TextInput isMultiline isRequired id="description" bind:value={tempVenue.description} label="Description" />
     </div>
   </div>
   <div class="space-y-3">
     <h2 class="text-lg font-semibold">Halls</h2>
     {#each tempVenue.halls as hall (hall)}
       <!-- TODO Extract removing halls into a named function instead. -->
-      <HallListing name={hall.name} seats={hall.seats.length} onRequestRemoval={() => tempVenue.halls = tempVenue.halls.filter((h) => h !== hall)} />
+      <HallListing bind:hall onRequestRemoval={() => tempVenue.halls = tempVenue.halls.filter((h) => h !== hall)} />
     {/each}
     <!-- TODO Extract adding halls into a named function instead. -->
     <Button type="button" variant="outlined" size="md" on:click={() => tempVenue.halls = [...tempVenue.halls, { name: 'Unnamed hall', seats: [] }]}>
       Add a hall
     </Button>
+  </div>
+  <div class="space-y-3">
+    <h2 class="text-lg font-semibold">Location</h2>
+    <div class="space-y-6">
+      <TextInput isRequired id="country" bind:value={tempVenue.location.country} label="Country" placeholder="Farawayistan" />
+      <TextInput isRequired id="city" bind:value={tempVenue.location.city} label="City" placeholder="Anytown" />
+      <TextInput isRequired id="postalCode" bind:value={tempVenue.location.postalCode} label="Postal code" placeholder="1337" />
+      <TextInput isRequired id="address" bind:value={tempVenue.location.address} label="Street name and number" placeholder="Someville Avenue 42" />
+      <TextInput isMultiline id="additionalInfo" bind:value={tempVenue.location.additionalInfo} label="Additional information" />
+    </div>
   </div>
   <Button isLoading={isSaving} variant="contained" size="lg">Save venue</Button>
 </form>
