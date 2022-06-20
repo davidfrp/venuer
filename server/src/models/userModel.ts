@@ -8,6 +8,8 @@ interface UserDocument extends Document {
   name: string
   email: string
   password: string
+  lastPasswordChangedAt: Date
+  lastLoginAt: Date
   isVerified: boolean
   role: number
 }
@@ -21,6 +23,8 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  lastPasswordChangedAt: { type: Date, required: true },
+  lastLoginAt: { type: Date, required: true },
   isVerified: { type: Boolean, default: false },
   role: { type: Number, default: 0 }
 })

@@ -55,7 +55,10 @@ router.patch('/:id', authContext, errorCatcher(async (req, res) => {
 
   user.set({ ...rest })
   if (newPassword) {
-    user.set({ password: newPassword })
+    user.set({
+      password: newPassword,
+      lastPasswordChangedAt: new Date()
+    })
   }
   await user.save()
 

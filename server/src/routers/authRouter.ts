@@ -17,7 +17,14 @@ router.post('/register', errorCatcher(async (req, res) => {
     throw new BadRequestError('Email already registered')
   }
 
-  const user = new User({ name, email, password })
+  const user = new User({
+    name,
+    email,
+    password,
+    lastPasswordChangedAt: new Date(),
+    lastLoginAt: new Date()
+  })
+
   await user.save()
 
   // 307 Temporary Redirect, preserves request method and body.
@@ -44,6 +51,8 @@ router.post('/login', errorCatcher(async (req, res) => {
     maxAge: 1000 * 60 * 60,
     secure: process.env.NODE_ENV === 'production'
   })
+
+  user.set({ lastLoginAt: new Date() })
 
   return res.sendStatus(204)
 }))
