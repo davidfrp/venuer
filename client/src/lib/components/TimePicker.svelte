@@ -20,14 +20,14 @@
   <div class="flex-1">
     <DropdownSelection id="hours" label="Hours" bind:value={selectedHours}>
       {#each hours as hour (hour)}
-        <option value={hour}>{hour}</option>
+        <option value={hour}>{('0' + hour).slice(-2)}</option>
       {/each}
     </DropdownSelection>
   </div>
   <div class="flex-1">
     <DropdownSelection id="minutes" label="Minutes" bind:value={selectedMinutes}>
       {#each minutes as minute (minute)}
-        <option value={minute}>{minute}</option>
+        <option value={minute}>{('0' + minute).slice(-2)}</option>
       {/each}
     </DropdownSelection>
   </div>

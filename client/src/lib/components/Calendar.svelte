@@ -12,7 +12,7 @@
   export let allowPickingTimeOfDay: boolean = false
 
   let dateOfMonthShown: Date = new Date(startDate ?? new Date())
-  let timeOfDayInMs: number = dayjs(startDate).millisecond()
+  let timeOfDayInMs: number = dayjs(startDate).diff(dayjs(startDate).startOf('day'), 'millisecond')
 
   $: if (allowPickingTimeOfDay && startDate && timeOfDayInMs) {
     const dateWithoutTime = dayjs(startDate).startOf('day')
