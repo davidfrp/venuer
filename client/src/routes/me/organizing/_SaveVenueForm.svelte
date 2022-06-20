@@ -27,12 +27,21 @@
     })
 
     if (status === 'success') {
-      onSaved(data as Venue)
+      venue = data as Venue
+      onSaved(venue)
     } else {
       errorMessage = (data as Record<string, unknown>).message as string
     }
 
     isSaving = false
+  }
+
+  const handleHallRemoval = (hall: Venue['halls'][number]) => {
+    tempVenue.halls = tempVenue.halls.filter(h => h !== hall)
+  }
+
+  const handleAddingUnnamedHall = () => {
+    tempVenue.halls = [...tempVenue.halls, { name: 'Unnamed hall', seats: [] }]
   }
 </script>
 
@@ -51,11 +60,9 @@
   <div class="space-y-3">
     <h2 class="text-lg font-semibold">Halls</h2>
     {#each tempVenue.halls as hall (hall)}
-      <!-- TODO Extract removing halls into a named function instead. -->
-      <HallListing bind:hall onRequestRemoval={() => tempVenue.halls = tempVenue.halls.filter((h) => h !== hall)} />
+      <HallListing bind:hall onRequestRemoval={() => handleHallRemoval(hall)} />
     {/each}
-    <!-- TODO Extract adding halls into a named function instead. -->
-    <Button type="button" variant="outlined" size="md" on:click={() => tempVenue.halls = [...tempVenue.halls, { name: 'Unnamed hall', seats: [] }]}>
+    <Button on:click={handleAddingUnnamedHall} variant="outlined" type="button" size="md" isFullWidth>
       Add a hall
     </Button>
   </div>

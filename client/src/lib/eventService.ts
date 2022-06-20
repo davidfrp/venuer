@@ -1,4 +1,4 @@
-import { get, post, patch, type ApiResponse } from '$lib/api'
+import { get, post, patch, del, type ApiResponse } from '$lib/api'
 
 export const getEvents = (fetch: typeof window.fetch) =>
   get('/events', fetch)
@@ -20,3 +20,6 @@ export const saveEvent = async ({ slug, venue, ...event }: Record<string, unknow
 
   return response
 }
+
+export const deleteEvent = async (slug: string, fetch?: typeof window.fetch) =>
+  del(`/events/${slug}`, fetch)

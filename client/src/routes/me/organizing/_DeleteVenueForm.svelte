@@ -4,21 +4,24 @@
   import { deleteVenue } from '$lib/venueService'
 
   export let onDeleted: () => void
-  export let venue: Venue
+  export let venue: Venue | undefined
 
   let confirmationText: string
   let isDeleting: boolean
 
   const handleSubmit = async () => {
     isDeleting = true
-    await deleteVenue(venue.slug)
+
+    await deleteVenue(venue!.slug)
+
     isDeleting = false
+
     onDeleted()
   }
 </script>
 
 <form on:submit|preventDefault={handleSubmit} class="space-y-6">
   <p>This venue will be deleted, along with all its events, orders, and settings. This will impact all current and past events. This action is irreversibel and <span class="font-bold">cannot be undone</span>.</p>
-  <TextInput id="confirmationText" bind:value={confirmationText} label="To verify, type &quot;{venue.name}&quot; below:" />
-  <Button isLoading={isDeleting} isDisabled={confirmationText !== venue.name} variant="contained" size="lg">Delete {venue.name}</Button>
+  <TextInput id="confirmationText" bind:value={confirmationText} label="To verify, type &quot;{venue?.name}&quot; below:" />
+  <Button isLoading={isDeleting} isDisabled={confirmationText !== venue?.name} variant="contained" size="lg">Delete {venue?.name}</Button>
 </form>

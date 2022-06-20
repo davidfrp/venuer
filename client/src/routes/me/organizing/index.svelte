@@ -22,9 +22,7 @@
 
   let isSavingModalShown: boolean
 
-  const handleRemoval = (venue: Venue) => {
-    venues = venues.filter(v => v.slug !== venue.slug)
-  }
+  $: venues = venues.filter(v => v !== undefined)
 
   const handleAdded = (venue: Venue) => {
     venues = [...venues, venue]
@@ -36,7 +34,7 @@
   <h2 class="text-2xl font-semibold">Your venues</h2>
   <div class="divide-y">
     {#each venues as venue}
-      <VenueListing {venue} onRequestRemoval={handleRemoval} />
+      <VenueListing bind:venue />
     {:else}
       <p class="text-center my-6">You don't organize any venues, yet</p>
     {/each}

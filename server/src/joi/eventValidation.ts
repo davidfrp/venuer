@@ -42,3 +42,13 @@ export const createEventSchema = Joi.object({
   endsAt,
   hall: hall.required()
 })
+
+export const updateEventSchema = Joi.object({
+  name,
+  videoId,
+  description,
+  imageUrl,
+  startsAt,
+  endsAt,
+  hall
+})

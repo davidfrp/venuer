@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { errorCatcher } from '../utils'
 import { Event } from '../models/eventModel'
 import { validate } from '../joi/validator'
-import { createEventSchema, getEventSchema } from '../joi/eventValidation'
+import { createEventSchema, getEventSchema, updateEventSchema } from '../joi/eventValidation'
 import { BadRequestError, ForbiddenError, NotFoundError } from '../errors'
 import { Venue, VenueDocument } from '../models/venueModel'
 import { authContext } from '../middleware/authContext'
@@ -62,16 +62,6 @@ router.get('/', errorCatcher(async (req, res) => {
     }
   }
 
-  // const events = await Event.find({
-  //   $lookup: {
-  //     from: 'venues',
-  //     localField: 'venue',
-  //     foreignField: '_id',
-  //     as: 'venue'
-  //   },
-  //   ...filter
-  // })
-
   const events = await Event.aggregate([
     {
       $lookup: {
@@ -88,9 +78,7 @@ router.get('/', errorCatcher(async (req, res) => {
       }
     },
     {
-      $match: {
-        ...filter
-      }
+      $match: filter
     }
   ])
 
@@ -135,8 +123,6 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     throw new BadRequestError('\'name\' and \'startsAt\' results in a \'slug\' that is already used by another event')
   }
 
-  console.log(req.body)
-
   const venueSlug: string = req.params.venueSlug ?? req.body.venue?.slug
   const venue: (VenueDocument & {
     _id: any
@@ -178,6 +164,38 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
 
   const createdEvent = await event.save()
   return res.status(201).send(createdEvent)
+}))
+
+router.patch('/:slug', authContext, errorCatcher(async (req, res) => {
+  const data = validate(req.body, updateEventSchema)
+
+  const event = await Event.findOne({ slug: req.params.slug }).populate('venue')
+  if (!event) {
+    throw new NotFoundError('Event not found')
+  }
+
+  if (event.venue.organizer?.toString() !== req.user!.id) {
+    throw new ForbiddenError('You\'re not an organizer of the venue for this event')
+  }
+
+  event.set(data)
+  const updatedEvent = await event.save()
+
+  return res.send(updatedEvent)
+}))
+
+router.delete('/:slug', authContext, errorCatcher(async (req, res) => {
+  const event = await Event.findOne({ slug: req.params.slug }).populate('venue')
+  if (!event) {
+    throw new NotFoundError('Event not found')
+  }
+
+  if (event.venue.organizer?.toString() !== req.user!.id) {
+    throw new ForbiddenError('You\'re not an organizer of the venue for this event')
+  }
+
+  await event.remove()
+  return res.sendStatus(204)
 }))
 
 export default router
