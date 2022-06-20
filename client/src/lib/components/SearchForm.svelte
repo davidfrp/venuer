@@ -99,7 +99,7 @@
       </div>
     </div>
   </div>
-  <div class="fixed right-0 bottom-0 left-0 py-3 pl-3.5 pr-6 flex justify-between border-t bg-white shadow-2xl shadow-white">
+  <div class="fixed right-0 bottom-0 left-0 py-3 pl-3.5 pr-6 flex items-center justify-between border-t bg-white shadow-2xl shadow-white">
     <Button variant="text" on:click={handleReset}>
       Clear all
     </Button>
