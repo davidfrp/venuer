@@ -2,16 +2,19 @@
   type Variant = 'text' | 'contained' | 'outlined' | 'none'
   type Type = 'submit' | 'reset' | 'button'
 
-  $: sizeStyles = size === 'sm' ? 'px-3 py-1 min-w-0' : (
-    size === 'base' ? 'p-2.5 min-w-[4rem] ' : (
-      size === 'md' ? 'px-6 py-3.5 min-w-[4rem] ' : 'w-full h-14 min-w-[4rem]'
+  $: sizeStyles = (isFullWidth ? 'w-full ' : '') + (
+    size === 'sm' ? 'px-3 py-1 min-w-0 ' : (
+      size === 'base' ? 'p-2.5 min-w-[4rem] ' : (
+        size === 'md' ? 'px-6 py-3.5 min-w-[4rem] ' : 'w-full h-14 min-w-[4rem] '
+      )
     )
   )
 
   $: floatingStyles = isFloating ? `absolute bottom-0 left-0 right-0 sm:right-auto
-    sm:left-1/2 sm:-translate-x-1/2 w-full h-14 min-w-[4rem] sm:w-auto sm:h-auto` : ''
+    sm:left-1/2 sm:-translate-x-1/2 w-full h-14 min-w-[4rem] sm:w-auto sm:h-auto
+    shadow-lg` : ''
 
-  $: baseStyles = variant !== 'none' ? `relative w-full h-full
+  $: baseStyles = variant !== 'none' ? `relative h-full 
     flex justify-center items-center leading-5 text-opacity-[0.85] 
     font-semibold bg-brand rounded-lg transition-colors 
     whitespace-nowrap ${floatingStyles} ${sizeStyles}` : ''
@@ -33,6 +36,7 @@
   export let variant: Variant = 'none'
   export let type: Type = 'submit'
   export let size: 'sm' | 'base' | 'md' | 'lg' = 'base'
+  export let isFullWidth: boolean = false
   export let isDisabled: boolean = false
   export let isLoading: boolean = false
   export let isFloating: boolean = false
