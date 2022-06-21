@@ -37,8 +37,7 @@ VenueSchema.set('toJSON', {
 
 // TODO FIX ALL PRE REMOVE
 VenueSchema.pre('remove', async function (next) {
-  await this.model('Event').deleteMany({ 'venue._id': this._id })
-  // await this.model('Hall').deleteMany({ venue: this._id })
+  await this.model('Event').deleteMany({ venue: this._id })
   next()
 })
 
