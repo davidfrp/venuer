@@ -77,7 +77,7 @@
       <SaveEventForm venues={myVenues} onSaved={() => isSavingModalShown = false} />
     </Modal>
   {:else}
-    <Modal title="Event cannot be created" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
+    <Modal title="Events cannot yet be created" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
       <div class="space-y-3">
         <p>No suitable venue for an event was found. This might be because you haven't created any venues yet, or because you haven't created any halls to host events in, for your venues.</p>
         <p>You can organize your venues from <a sveltekit:prefetch href="/me/organizing">your account's page</a>.</p>

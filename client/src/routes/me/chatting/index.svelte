@@ -1,9 +1,9 @@
 <script lang="ts">
-  import TextInput from '$lib/components/TextInput.svelte'
   import ChatMessage from './_ChatMessage.svelte'
-  import { session } from '$app/stores'
+  import TextInput from '$lib/components/TextInput.svelte'
+  import Button from '$lib/components/Button.svelte'
   import { io } from 'socket.io-client'
-import Button from '$lib/components/Button.svelte'
+  import { session } from '$app/stores'
 
   type Message = {
     author: {
