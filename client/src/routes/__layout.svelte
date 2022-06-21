@@ -20,6 +20,6 @@
 
 <Navbar />
 
-<main class="pt-[8.35rem] md:pt-[5.15rem] px-6 pb-6 lg:px-[var(--page-px)] mt-6">
+<main class="pt-[8.35rem] md:pt-[5.15rem] px-6 pb-16 lg:px-[var(--page-px)] mt-6">
   <slot />
 </main>

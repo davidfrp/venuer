@@ -19,8 +19,8 @@
 <div class="py-6 flex items-center" transition:slide|local>
   <div class="flex-1 min-w-0 flex flex-col">
     <span class="truncate">{venue?.name}</span>
-    <span class="text-sm text-gray-500 truncate">{venue?.location.address}</span>
-    <span class="text-sm text-gray-500 truncate">{venue?.location.postalCode} {venue?.location.city}</span>
+    <span class="truncate text-sm text-gray-500">{venue?.location.address}</span>
+    <span class="truncate text-sm text-gray-500">{venue?.location.postalCode} {venue?.location.city}</span>
   </div>
   <Button variant="text" on:click={() => isSavingModalShown = true}>Edit</Button>
   <Button variant="text" on:click={() => isDeletingModalShown = true}>Delete</Button>

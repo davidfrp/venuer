@@ -18,7 +18,7 @@
         Your event
       </span>
     {/if}
-    <h1 class="text-lg font-semibold truncate">{event.name}</h1>
+    <h1 class="truncate text-lg font-semibold">{event.name}</h1>
     <div class="text-sm text-gray-500">
       {event.venue.location.city}, {event.venue.name}
     </div>

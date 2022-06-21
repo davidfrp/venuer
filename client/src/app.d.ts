@@ -57,9 +57,11 @@ declare type User = {
   _id: string
   name: string
   email: string
+  lastPasswordChangedAt: Date
+  lastLoginAt: Date
   isVerified: boolean
   role: number
-  createdAt: Date,
+  createdAt: Date
   updatedAt: Date
 }
 

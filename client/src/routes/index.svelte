@@ -49,7 +49,7 @@
   <meta property="og:image" content="" />
 </svelte:head>
 
-<div class="pb-12 mb-6 sm:mb-10 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+<div class="mb-6 sm:mb-10 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
   {#each events as event}
     <EventCard {event} />
   {:else}
@@ -72,7 +72,16 @@
       </div>
     </Button>
   </div>
-  <Modal title="Create an event" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
-    <SaveEventForm venues={myVenues} onSaved={() => isSavingModalShown = false} />
-  </Modal>
+  {#if myVenues.filter(v => v.halls.length > 0).length > 0}
+    <Modal title="Create an event" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
+      <SaveEventForm venues={myVenues} onSaved={() => isSavingModalShown = false} />
+    </Modal>
+  {:else}
+    <Modal title="Event cannot be created" isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false}>
+      <div class="space-y-3">
+        <p>No suitable venue for an event was found. This might be because you haven't created any venues yet, or because you haven't created any halls to host events in, for your venues.</p>
+        <p>You can organize your venues from <a sveltekit:prefetch href="/me/organizing">your account's page</a>.</p>
+      </div>
+    </Modal>
+  {/if}
 {/if}
