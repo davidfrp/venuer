@@ -49,17 +49,23 @@ router.patch('/:id', authContext, errorCatcher(async (req, res) => {
   } = validate(req.body, updateUserSchema)
 
   const user = await User.findById(req.user!.id)
-  if (!user || !(await user.matchesPassword(currentPassword as string))) {
-    throw new UnauthorizedError('Wrong password')
+  if (!user) {
+    throw new NotFoundError('User not found')
   }
 
   user.set({ ...rest })
-  if (newPassword) {
+
+  if (currentPassword && newPassword) {
+    if (!user || !(await user.matchesPassword(currentPassword as string))) {
+      throw new UnauthorizedError('Wrong password')
+    }
+
     user.set({
       password: newPassword,
       lastPasswordChangedAt: new Date()
     })
   }
+
   await user.save()
 
   return res.send(user)

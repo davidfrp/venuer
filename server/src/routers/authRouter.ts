@@ -53,6 +53,7 @@ router.post('/login', errorCatcher(async (req, res) => {
   })
 
   user.set({ lastLoginAt: new Date() })
+  await user.save()
 
   return res.sendStatus(204)
 }))
