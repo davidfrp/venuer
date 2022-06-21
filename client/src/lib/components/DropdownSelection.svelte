@@ -1,7 +1,7 @@
 <script lang="ts">
   export let id: string
   export let label: string
-  export let value: any
+  export let value: any = undefined
 </script>
 
 <div class="flex flex-col">

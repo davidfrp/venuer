@@ -12,7 +12,7 @@
 
   $: floatingStyles = isFloating ? `absolute bottom-0 left-0 right-0 sm:right-auto
     sm:left-1/2 sm:-translate-x-1/2 w-full h-14 min-w-[4rem] sm:w-auto sm:h-auto
-    shadow-lg` : ''
+    shadow-md` : ''
 
   $: baseStyles = variant !== 'none' ? `relative h-full 
     flex justify-center items-center leading-5 text-opacity-[0.85] 

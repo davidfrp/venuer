@@ -107,7 +107,7 @@
     </div>
     <div class="flex gap-1.5 text-xs text-gray-500">
       <div>{formatDatesToHumanReadable(initializedQuery.after, initializedQuery.before)}</div>
-      <span aria-hidden class="font-semibold">·</span>
+      <span aria-hidden>&bull;</span>
       <div>{initializedQuery.lat && initializedQuery.lng ? 'Near you' : 'Anywhere'}</div>
     </div>
   </div>

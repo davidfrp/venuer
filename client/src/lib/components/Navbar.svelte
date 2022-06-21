@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { session } from '$app/stores'
+  import { session, page } from '$app/stores'
   import { logout } from '$lib/authService'
   import Searchbar from './Searchbar.svelte'
+  $: redirectTo = new URL($page.url).pathname
 </script>
 
 <nav class="fixed top-0 z-10 w-full py-3 flex flex-wrap gap-3 items-center justify-between px-6 lg:px-[var(--page-px)] border-b bg-white">
@@ -16,7 +17,7 @@
       <a href="/me" class="no-base px-3 py-2 hover:underline">Your account</a>
       <button on:click={logout} class="px-3 py-2 hover:underline font-medium">Log out</button>
     {:else}
-      <a href="/login" class="no-base px-3 py-2 hover:underline">Log in</a>
+      <a href="/login?redirectTo={redirectTo}" class="no-base px-3 py-2 hover:underline">Log in</a>
       <a href="/register" class="no-base px-3 py-2 hover:underline">Sign up</a>
     {/if}
   </div>

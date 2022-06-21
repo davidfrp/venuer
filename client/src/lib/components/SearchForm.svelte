@@ -48,15 +48,9 @@
     tempQuery.searchTerm = undefined
     inputRef?.focus()
   }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit()
-    }
-  }
 </script>
 
-<div class="relative pb-12">
+<form on:submit|preventDefault={handleSubmit} class="relative pb-12">
   {#if errorMessage}
     <div class="mb-6">
       <Alert message={errorMessage} title="Your search could not be fulfilled" />
@@ -68,7 +62,6 @@
       <div class="flex items-center gap-3">
         <div class="flex-1">
           <TextInput
-            on:keydown={handleKeyDown}
             bind:value={tempQuery.searchTerm}
             placeholder="Search for an event or venue"
             id="searchTerm"
@@ -92,7 +85,7 @@
       <h2 class="text-lg font-semibold">Where?</h2>
       <div class="flex justify-start">
         <label for="near" class="flex flex-col flex-1 cursor-pointer">
-          Only nearby
+          <span>Only nearby</span>
           <span class="text-sm text-gray-500">Limit results to be near your location</span>
         </label>
         <input type="checkbox" name="near" id="near" bind:checked={isUsingLocation} on:change={handleUseLocation} />
@@ -100,11 +93,11 @@
     </div>
   </div>
   <div class="fixed right-0 bottom-0 left-0 py-3 pl-3.5 pr-6 flex items-center justify-between border-t bg-white shadow-2xl shadow-white">
-    <Button variant="text" on:click={handleReset}>
+    <Button type="button" variant="text" on:click={handleReset}>
       Clear all
     </Button>
-    <Button isLoading={isSearching} variant="contained" size="md" on:click={handleSubmit}>
+    <Button isLoading={isSearching} variant="contained" size="md">
       Search
     </Button>
   </div>
-</div>
+</form>
