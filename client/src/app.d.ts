@@ -65,6 +65,15 @@ declare type User = {
   updatedAt: Date
 }
 
+declare type Message = {
+  author: {
+    _id: string
+    name: string
+  }
+  content: string
+  createdAt: Date
+}
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {

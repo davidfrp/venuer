@@ -7,16 +7,44 @@ import eventRouter from './routers/eventRouter'
 import allowCors from './middleware/allowCors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
-import { NotFoundError } from './errors'
-
 import path from 'path'
+import http from 'http'
+import { NotFoundError } from './errors'
+import { Server } from 'socket.io'
 
 const uri = process.env.MONGODB_URI as string
 mongoose.connect(uri)
 
 const app = express()
+const server = http.createServer(app)
 
-// Preliminary middleware
+const io = new Server(server, {
+  cors: {
+    origin: [
+      // 'http://localhost:3000',
+      'http://192.168.1.9:3000'
+    ]
+  }
+})
+
+io.on('connection', (socket) => {
+  socket.on('message', (message) => {
+    io.emit('message', message)
+  })
+
+  socket.on('startedTyping', (author) => {
+    io.emit('startedTyping', author)
+  })
+
+  socket.on('stoppedTyping', (author) => {
+    io.emit('stoppedTyping', author)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
 app.use(allowCors)
 app.use(cookieParser())
 app.use(express.json())
@@ -24,7 +52,6 @@ app.use(express.json())
 // TODO Use smth like helmet
 // TODO Add rate limiter
 
-// Routers
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
 app.use('/venues', venueRouter)
@@ -32,9 +59,6 @@ app.use('/events', eventRouter)
 
 app.use(express.static(path.resolve('../client/public')))
 
-// FIXME Replace the word "vendor" with "organizer"
-
-// Unknown routes
 app.use(() => {
   throw new NotFoundError()
 })
@@ -56,6 +80,6 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 4000
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
 })

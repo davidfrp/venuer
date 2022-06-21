@@ -36,7 +36,7 @@
     {#each venues as venue}
       <VenueListing bind:venue />
     {:else}
-      <p class="text-center my-6">You don't organize any venues, yet</p>
+      <p class="text-center my-6 text-gray-500">You don't organize any venues, yet</p>
     {/each}
   </div>
   <div class="flex flex-col items-center">
