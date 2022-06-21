@@ -13,6 +13,6 @@ const newPassword = password
 export const updateUserSchema = Joi.object({
   name,
   email,
-  password: password.required(),
+  password,
   newPassword
 }).or('name', 'email', 'newPassword')
