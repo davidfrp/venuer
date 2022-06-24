@@ -50,7 +50,7 @@
 </svelte:head>
 
 <div class="mb-6 sm:mb-10 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {#each events as event}
+  {#each events.sort((a, b) => { return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime() }) as event}
     <EventCard {event} />
   {:else}
     <h2 class="text-xl">No exact matches</h2>

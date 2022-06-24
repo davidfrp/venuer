@@ -37,6 +37,7 @@ declare type VenueEvent = {
   _id: string
   name: string
   slug: string
+  externalUrl?: string
   description: string
   imageUrl: string
   videoId?: string

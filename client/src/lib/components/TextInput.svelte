@@ -13,7 +13,7 @@
 
 <fieldset class="flex flex-col">
   {#if label}
-    <label for={id} class="mb-1.5 font-medium">
+    <label for={id} class="mb-1.5">
       {label}
       {#if isRequired}
         <span title="This field is required" class="text-rose-600">*</span>
