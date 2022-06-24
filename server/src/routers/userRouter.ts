@@ -71,4 +71,15 @@ router.patch('/:id', authContext, errorCatcher(async (req, res) => {
   return res.send(user)
 }))
 
+router.delete('/@me', authContext, errorCatcher(async (req, res) => {
+  const user = await User.findById(req.user!.id)
+  if (!user) {
+    throw new NotFoundError('User not found')
+  }
+
+  await user.remove()
+
+  return res.sendStatus(204)
+}))
+
 export default router
