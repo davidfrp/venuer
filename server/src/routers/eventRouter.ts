@@ -99,7 +99,7 @@ router.get('/:slug', errorCatcher(async (req, res) => {
 
 router.post('/', authContext, errorCatcher(async (req, res) => {
   const {
-    name, description, imageUrl, videoId, startsAt, endsAt, hall: hallId
+    name, externalUrl, description, imageUrl, videoId, startsAt, endsAt, hall: hallId
   } = validate(req.body, createEventSchema)
 
   const padWithZero = (num: number) => num < 10 ? `0${num}` : num
@@ -153,6 +153,7 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
   const event = new Event({
     name,
     slug,
+    externalUrl,
     description,
     imageUrl,
     videoId,

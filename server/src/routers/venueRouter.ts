@@ -39,7 +39,8 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
   const {
     name,
     description,
-    location
+    location,
+    halls
   } = validate(req.body, createVenueSchema)
 
   const slug = (name as string)
@@ -58,7 +59,8 @@ router.post('/', authContext, errorCatcher(async (req, res) => {
     name,
     slug,
     description,
-    location
+    location,
+    halls
   })
 
   const createdVenue = await venue.save()

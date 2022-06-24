@@ -6,6 +6,7 @@ interface EventDocument extends Document {
   venue: VenueDocument
   name: string
   slug: string
+  externalUrl?: string
   description: string
   imageUrl: string
   videoId?: string
@@ -18,6 +19,7 @@ const EventSchema = new Schema({
   venue: { type: Schema.Types.ObjectId, ref: 'Venue', required: true },
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
+  externalUrl: { type: String },
   description: { type: String, required: true },
   imageUrl: { type: String, required: true },
   videoId: { type: String },

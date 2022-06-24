@@ -9,7 +9,9 @@ export const name = Joi.string().trim().min(3).max(2048)
 const youtubePattern = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/gi
 
 export const videoId = Joi.string().trim()
-  .replace(youtubePattern, '$1')
+  .replace(youtubePattern, '$1').allow('')
+
+export const externalUrl = Joi.string().trim()
 
 export const description = Joi.string().trim().min(3).max(2048)
 
@@ -36,6 +38,7 @@ export const getEventSchema = Joi.object().keys({
 export const createEventSchema = Joi.object({
   name: name.required(),
   videoId,
+  externalUrl,
   description: description.required(),
   imageUrl: imageUrl.required(),
   startsAt: startsAt.required(),
@@ -46,6 +49,7 @@ export const createEventSchema = Joi.object({
 export const updateEventSchema = Joi.object({
   name,
   videoId,
+  externalUrl,
   description,
   imageUrl,
   startsAt,
