@@ -1,2 +1,0 @@
-<h1>This is the orders page</h1>
-<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perspiciatis quisquam, dolorem voluptatum odit quia vero consequuntur perferendis odio quam necessitatibus nostrum beatae laudantium, sed obcaecati? Est voluptatibus exercitationem fugit expedita.</p>
