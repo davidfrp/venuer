@@ -23,12 +23,13 @@
     isSaving = true
 
     const slug = event?.slug
-    const { venue, hall, name, description, imageUrl, videoId, startsAt, endsAt } = tempEvent
+    const { venue, hall, name, externalUrl, description, imageUrl, videoId, startsAt, endsAt } = tempEvent
     const [data, status] = await saveEvent({
       slug,
       venue,
       hall,
       name,
+      externalUrl,
       description,
       imageUrl,
       videoId,
@@ -68,6 +69,7 @@
   <TextInput isRequired id="name" bind:value={tempEvent.name} label="Name" />
   <TextInput isRequired isMultiline id="description" bind:value={tempEvent.description} label="Description" />
   <TextInput isRequired id="imageUrl" bind:value={tempEvent.imageUrl} label="Image url" />
+  <TextInput id="externalUrl" bind:value={tempEvent.externalUrl} label="Ticketing url" />
   <TextInput id="videoId" bind:value={tempEvent.videoId} label="Video id" />
   <Calendar
     bind:startDate={tempEvent.startsAt}

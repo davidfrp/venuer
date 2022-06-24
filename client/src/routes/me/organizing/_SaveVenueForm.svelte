@@ -49,7 +49,6 @@
   {#if errorMessage}
     <Alert title="Your venue could not be saved" message={errorMessage} />
   {/if}
-  <!-- TODO Set required fields to be required, x-check with Joi- and model schema -->
   <div class="space-y-3">
     <h2 class="text-lg font-semibold">General details</h2>
     <div class="space-y-6">

@@ -20,8 +20,20 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="space-y-6">
-  <p>This venue will be deleted, along with all its events, orders, and settings. This will impact all current and past events. This action is irreversibel and <span class="font-bold">cannot be undone</span>.</p>
+<form on:submit|preventDefault={null} class="space-y-6">
+  <div class="space-y-3">
+    <p>This venue will be deleted, along with all its events, orders, and settings. This will impact all current and past events.</p>
+    <p>This action is irreversibel and <span class="font-bold">cannot be undone</span>.</p>
+  </div>
   <TextInput id="confirmationText" bind:value={confirmationText} label="To verify, type &quot;{venue?.name}&quot; below:" />
-  <Button isLoading={isDeleting} isDisabled={confirmationText !== venue?.name} variant="contained" size="lg">Delete {venue?.name}</Button>
+  <Button
+    isDisabled={confirmationText !== venue?.name}
+    on:click={handleSubmit}
+    isLoading={isDeleting}
+    variant="contained"
+    type="button"
+    size="lg"
+  >
+    Delete {venue?.name}
+  </Button>
 </form>

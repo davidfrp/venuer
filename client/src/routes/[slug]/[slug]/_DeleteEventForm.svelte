@@ -20,8 +20,17 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+<form on:submit|preventDefault={null} class="space-y-6">
   <p>This event will be deleted. This action is irreversibel and <span class="font-bold">cannot be undone</span>.</p>
   <TextInput id="confirmationText" bind:value={confirmationText} label="To verify, type &quot;{event?.name}&quot; below:" />
-  <Button isLoading={isDeleting} isDisabled={confirmationText !== event?.name} variant="contained" size="lg">Delete {event?.name}</Button>
+  <Button
+    isDisabled={confirmationText !== event?.name}
+    on:click={handleSubmit}
+    isLoading={isDeleting}
+    variant="contained"
+    type="button"
+    size="lg"
+  >
+    Delete {event?.name}
+  </Button>
 </form>

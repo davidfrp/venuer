@@ -84,25 +84,25 @@
   </div>
   <a
     sveltekit:prefetch
-    href={`${isLoggedIn ? "" : "/login?redirectTo="}/${event.venue.slug}/${event.slug}/tickets`}
+    href={(isLoggedIn ? event.externalUrl : `/login?redirectTo=${event.venue.slug}/${event.slug}`)}
     class="no-base block"
   >
     <Button variant="contained" size="lg">
-      {isLoggedIn ? "Buy tickets" : "Login to buy tickets"}
+      {isLoggedIn ? 'Buy tickets' : 'Login to buy tickets'}
     </Button>
   </a>
   <p class="whitespace-pre-wrap">
     {event.description}
   </p>
-  <!-- TODO Uncomment when ready to test YouTube video -->
-  <!-- <iframe
-    class="aspect-video w-full max-w-2xl"
-    src="http://www.youtube.com/embed/{event.videoId}"
-    allowfullscreen
-    frameborder={1}
-    title=""
-  /> -->
-  <!-- <code class="whitespace-pre-wrap truncate">{JSON.stringify(event, null, 2)}</code> -->
+  {#if event.videoId}
+    <iframe
+      class="aspect-video w-full max-w-2xl"
+      src="http://www.youtube.com/embed/{event.videoId}"
+      allowfullscreen
+      frameborder={1}
+      title=""
+    />
+  {/if}
 </div>
 
 <Modal isOpen={isSavingModalShown} onRequestClose={() => isSavingModalShown = false} title="Edit event">

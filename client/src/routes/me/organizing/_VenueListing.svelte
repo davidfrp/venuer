@@ -21,6 +21,7 @@
     <span class="truncate">{venue?.name}</span>
     <span class="truncate text-sm text-gray-500">{venue?.location.address}</span>
     <span class="truncate text-sm text-gray-500">{venue?.location.postalCode} {venue?.location.city}</span>
+    <span class="truncate text-sm text-gray-500">{venue?.location.country}</span>
   </div>
   <Button variant="text" on:click={() => isSavingModalShown = true}>Edit</Button>
   <Button variant="text" on:click={() => isDeletingModalShown = true}>Delete</Button>
