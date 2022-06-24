@@ -1,18 +1,15 @@
 import { model, Schema, Document } from 'mongoose'
-import { BlockDocument } from './blockModel'
 
 interface SeatDocument extends Document {
   row?: string
   number?: string
   additionalInfo?: string
-  block: BlockDocument
 }
 
 const SeatSchema = new Schema({
   row: { type: String },
   number: { type: String },
-  additionalInfo: { type: String },
-  block: { type: Schema.Types.ObjectId, ref: 'Block' }
+  additionalInfo: { type: String }
 }, { timestamps: true })
 
 SeatSchema.set('toJSON', {

@@ -1,7 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 import { hash, compare } from 'bcrypt'
 import { Venue } from './venueModel'
-import { Order } from './orderModel'
 
 // TODO Add lastPasswordChangedAt and lastLoginAt
 interface UserDocument extends Document {
@@ -53,9 +52,6 @@ UserSchema.pre('save', async function (next) {
 UserSchema.pre('remove', async function (next) {
   const venues = await Venue.find({ organizer: this._id })
   await Promise.all(venues.map(venue => venue.remove()))
-
-  const orders = await Order.find({ vendee: this._id })
-  await Promise.all(orders.map(order => order.remove()))
   next()
 })
 
