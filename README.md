@@ -1,5 +1,5 @@
 ![Screenshot 2023-02-17 at 21-57-25 Find an event - Venuer](https://user-images.githubusercontent.com/6499570/219791895-e753eb26-ca92-4d48-baa2-0fe4ac354b41.png)
-_Forsiden af webstedet. Her ses at brugen allerede er logget ind som administrator og i stand til at kunne oprette nye events._
+_Forsiden af webstedet. Her ses at brugeren allerede er logget ind som administrator og i stand til at kunne oprette nye events._
 
 ![Screenshot 2023-02-17 at 21-57-39 Find an event - Venuer](https://user-images.githubusercontent.com/6499570/219791898-2a064e23-e380-430e-8546-1da0462a053f.png)
 _Der er adskillige valgmuligheder for at kunne afgrænse hvilke events man ønsker at få returneret. Tilmed også efter geo-placering, så man kun får returneret de events som ligger i nærheden af én._
@@ -8,7 +8,7 @@ _Der er adskillige valgmuligheder for at kunne afgrænse hvilke events man ønsk
 _Mulighed for kunne ændre indstillinger og detaljer vedrørende én selv._
 
 ![Screenshot 2023-02-17 at 21-49-11 Your account - Venuer](https://user-images.githubusercontent.com/6499570/219791910-35579b1b-d558-40db-87c5-a83a9a0600e9.png)
-_Demonstration af brugen af websockets til at kunne sende beskeder frem og tilbage mellem brugere der er logget ind._
+_Demonstration af brugeren af websockets til at kunne sende beskeder frem og tilbage mellem brugere der er logget ind._
 
 # Venuer
 
@@ -65,7 +65,7 @@ npm run dev
 
 For at se projektet, navigér til http://localhost:3000 i din webbrowser.
 
-Oversigt over relavante porte og deres brug:
+Oversigt over relevante porte og deres brug:
 
 | Port | Beskrivelse |
 | :--- | :---------- |
