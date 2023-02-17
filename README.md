@@ -8,7 +8,7 @@ _Der er adskillige valgmuligheder for at kunne afgrænse hvilke events man ønsk
 _Mulighed for kunne ændre indstillinger og detaljer vedrørende én selv._
 
 ![Screenshot 2023-02-17 at 21-49-11 Your account - Venuer](https://user-images.githubusercontent.com/6499570/219791910-35579b1b-d558-40db-87c5-a83a9a0600e9.png)
-_Demonstration af brugeren af websockets til at kunne sende beskeder frem og tilbage mellem brugere der er logget ind._
+_Demonstration af brugen af websockets til at kunne sende beskeder frem og tilbage mellem brugere der er logget ind._
 
 # Venuer
 
